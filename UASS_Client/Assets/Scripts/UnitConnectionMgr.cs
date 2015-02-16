@@ -100,7 +100,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 							newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
 							newU.UnitType = Convert.ToInt32(parsed[1]);
 							newU.IPAddress = anyIP.Address.ToString();
-							newU.Port = anyIP.Port;
+							newU.Port = 8051;
 							newU.IsSelected = false;
 
 							makeNewUnit = true;
@@ -111,9 +111,10 @@ public class UnitConnectionMgr : MonoBehaviour {
 							threadMutex.WaitOne();
 
 							// send message to ROS node 
-							IPEndPoint sendDest = new IPEndPoint(anyIP.Address, anyIP.Port);
-							Byte[] sendMsg = Encoding.ASCII.GetBytes("0 " + newUnitsID);
+							IPEndPoint sendDest = new IPEndPoint(anyIP.Address, 8051);
+							Byte[] sendMsg = Encoding.ASCII.GetBytes("1 " + newUnitsID);
 							client.Send(sendMsg, sendMsg.Length, sendDest);
+							Debug.Log("Send message to " + anyIP.Address.ToString() + ": 1 "+ newUnitsID); 
 						}
 						else
 						{

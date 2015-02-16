@@ -1,11 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitMgr.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitConnectionMgr.cs">
     <Files>
-      <File FileName="Assets\Scripts\UnitMgr.cs" Line="25" Column="3" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="42" Column="15" />
-      <File FileName="Assets\Scripts\SelectionMgr.cs" Line="43" Column="29" />
-      <File FileName="Assets\Scripts\NetworkMgr.cs" Line="35" Column="30" />
+      <File FileName="Assets\Scripts\UnitConnectionMgr.cs" Line="92" Column="9" />
+      <File FileName="Assets\Scripts\UnitMgr.cs" Line="49" Column="52" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="37" Column="16" />
+      <File FileName="Assets\Scripts\NetworkMgr.cs" Line="27" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

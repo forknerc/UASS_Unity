@@ -48,7 +48,10 @@ public class UnitMgr : MonoBehaviour {
 		{
 			Unit stats = (Unit)newUnit.GetComponent("Unit");
 			stats.CopyAttributes(unitStats);
-			stats.Owner = newUnit.networkView.viewID.ToString();
+			stats.ID = (newUnit.GetComponent<NetworkView>().viewID.ToString().Split())[1];
+			stats.Owner = newUnit.GetComponent<NetworkView>().viewID.owner.guid.ToString();
+
+			Debug.Log("Owner ID: " + stats.Owner + " " + stats.ID);
 	
 			myUnits.Add(newUnit);
 			allUnits.Add(newUnit);
@@ -67,12 +70,7 @@ namespace UASS.unitInfoStruct
 {
 	public struct newRobotInfo
 	{
-		private string id;
-		public string ID
-		{
-			get{return id;}
-			set{id = value;}
-		}
+		public string id;
 		
 		public Vector3 Position;
 		public Vector3 Orientation;
