@@ -101,7 +101,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 							newU.UnitType = Convert.ToInt32(parsed[1]);
 							newU.IPAddress = anyIP.Address.ToString();
 							newU.Port = anyIP.Port;
-							//newU.IsSelected = false;
+							newU.IsSelected = false;
 
 							makeNewUnit = true;
 
@@ -165,7 +165,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 		if(makeNewUnit)
 		{
 			makeNewUnit = false;
-			//newUnitsID = unitMgrScript.AddUnit(newU);
+			newUnitsID = unitMgrScript.AddUnit(newU);
 		}
 		threadMutex.ReleaseMutex();
 	}

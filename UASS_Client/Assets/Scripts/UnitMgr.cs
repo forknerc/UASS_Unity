@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UASS.unitInfoStruct;
 
 public class UnitMgr : MonoBehaviour {
 	public List<GameObject> myUnits;
@@ -26,7 +27,7 @@ public class UnitMgr : MonoBehaviour {
 
 	//Assumes robot has requested connection and is waiting for acknowledgement
 	//This function is called once the "Add Robot" button is clicked. 
-	public string AddUnit(Unit unitStats)
+	public string AddUnit(newRobotInfo unitStats)
 	{
 		GameObject newUnit = null;
 		switch(unitStats.UnitType)
@@ -80,5 +81,6 @@ namespace UASS.unitInfoStruct
 		
 		public string IPAddress;
 		public int Port;
+		public bool IsSelected;
 	}
 }

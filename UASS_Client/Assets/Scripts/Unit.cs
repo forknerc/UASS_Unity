@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UASS.unitInfoStruct;
 
 public class Unit : MonoBehaviour{ 
 	private string id;
@@ -31,7 +32,7 @@ public class Unit : MonoBehaviour{
 	}
 
 
-	public void CopyAttributes(Unit U)
+	public void CopyAttributes(newRobotInfo U)
 	{
 		IsSelected=U.IsSelected;
 		Owner=U.Owner;
