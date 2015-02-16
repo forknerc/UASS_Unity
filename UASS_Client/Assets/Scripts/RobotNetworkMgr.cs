@@ -8,47 +8,47 @@ using System.Threading;
 using UnityEngine;
 using UASS.unitInfoStruct;
 
-public class UnitConnectionMgr : MonoBehaviour {
+public class RobotNetworkMgr : MonoBehaviour {
 
 	// mutex lock
 	public Mutex threadMutex;
-
+	
 	// receiving Thread
 	private Thread receiveThread;
 	
 	// udpclient object
 	private UdpClient client;
-
+	
 	// receive port
 	private int port = 8053; // define > init
-
+	
 	// list of all units IP addresses
 	public List<IPAddress> unitIPs;
-
+	
 	// reference to unit manager
 	public GameObject unitMgr;
-
+	
 	private UnitMgr unitMgrScript;
-
+	
 	private string newUnitsID;
 	private newRobotInfo newU;
 	private bool makeNewUnit;
-
+	
 	// Use this for initialization
 	void Start () 
 	{
-	
+		
 		threadMutex = new Mutex();
-
+		
 		makeNewUnit = false;
-
+		
 		unitIPs = new List<IPAddress>();
-
+		
 		unitMgrScript = unitMgr.GetComponent<UnitMgr>();
-
+		
 		InitSocket();
 	}
-
+	
 	void InitSocket()
 	{	
 		receiveThread = new Thread(
@@ -56,23 +56,33 @@ public class UnitConnectionMgr : MonoBehaviour {
 		receiveThread.IsBackground = true;
 		receiveThread.Start();
 	}
-
+	
 	// receive thread
 	private  void ReceiveData()
 	{
 		bool existsFlag = false;
+
 		
 		client = new UdpClient(port);
 		while (true)
 		{
+			int ctr = 0;
+			Debug.Log("made it to " + ctr);
+			ctr++;
 			try
 			{
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 				byte[] data = client.Receive(ref anyIP);
+				
+				Debug.Log("made it to " + ctr);
+				ctr++;
 
 				//Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
 				string msg = Encoding.UTF8.GetString(data);
 				Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
+				
+				Debug.Log("made it to " + ctr);
+				ctr++;
 
 				// split message into position vector
 				threadMutex.WaitOne(); // MOVE ME
@@ -81,53 +91,66 @@ public class UnitConnectionMgr : MonoBehaviour {
 				switch(parsed[0])
 				{
 					// request to join
-					case "0":
-						// check to see if robot already requested to join
-						existsFlag = false;
-						foreach (GameObject gameO in unitMgrScript.allUnits)
+				case "0":
+					// check to see if robot already requested to join
+					existsFlag = false;
+					/*foreach (GameObject gameO in unitMgrScript.allUnits)
+					{
+						if(gameO.GetComponent<Unit>().IPAddress == anyIP.Address.ToString())
 						{
-							if(gameO.GetComponent<Unit>().IPAddress == anyIP.Address.ToString())
-							{
-								existsFlag = true;
-							}
+							existsFlag = true;
 						}
-						if(existsFlag == false)
-						{
-							// make new unit for this IP address
-							Debug.Log("Creating new unit");
-							newU = new newRobotInfo();
-							newU.Position = new Vector3(0.0f,0.0f,0.0f);
-							newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
-							newU.UnitType = Convert.ToInt32(parsed[1]);
-							newU.IPAddress = anyIP.Address.ToString();
-							newU.Port = 8051;
-							newU.IsSelected = false;
+					}*/
+					if(existsFlag == false)
+					{
+						Debug.Log("made it to " + ctr);
+						ctr++;
 
-							makeNewUnit = true;
+						// make new unit for this IP address
+						Debug.Log("Creating new unit");
+						newU = new newRobotInfo();
+						newU.Position = new Vector3(0.0f,0.0f,0.0f);
+						newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
+						newU.UnitType = Convert.ToInt32(parsed[1]);
+						newU.IPAddress = anyIP.Address.ToString();
+						newU.Port = 8051;
+						newU.IsSelected = false;
+						 
+						makeNewUnit = true;
+						
+						// release mutex to let the main thread add a new unit
 
-							// release mutex to let the main thread add a new unit
-							threadMutex.ReleaseMutex();
-							Thread.Sleep(250);
-							threadMutex.WaitOne();
+						Debug.Log("made it to " + ctr);
+						ctr++;
 
-							// send message to ROS node 
-							IPEndPoint sendDest = new IPEndPoint(anyIP.Address, 8051);
-							Byte[] sendMsg = Encoding.ASCII.GetBytes("1 " + newUnitsID);
-							client.Send(sendMsg, sendMsg.Length, sendDest);
-							Debug.Log("Send message to " + anyIP.Address.ToString() + ": 1 "+ newUnitsID); 
-						}
-						else
-						{
-							Debug.Log("Unit already exists");
-						}
-						break;
+						threadMutex.ReleaseMutex();
+						Thread.Sleep(250);
+						threadMutex.WaitOne();
+
+						Debug.Log("made it to " + ctr);
+						ctr++;
+						
+						// send message to ROS node 
+						IPEndPoint sendDest = new IPEndPoint(anyIP.Address, 8051);
+						Byte[] sendMsg = Encoding.ASCII.GetBytes("1 " + newUnitsID);
+						client.Send(sendMsg, sendMsg.Length, sendDest);
+						Debug.Log("Send message to " + anyIP.Address.ToString() + ": 1 " + newUnitsID); 
+
+						Debug.Log("made it to " + ctr);
+						ctr++;
+					}
+					else
+					{
+						Debug.Log("Unit already exists");
+					}
+					break;
 					// position update from robot
-					case "3":
-						Debug.Log("Unit update position msg");
-						break;
-					default:
-						Debug.Log("Mgs not in protocol");
-						break;
+				case "3":
+					Debug.Log("Unit update position msg");
+					break;
+				default:
+					Debug.Log("Mgs not in protocol");
+					break;
 					
 				}
 				/*if(parsed.Length >= 14)
@@ -139,8 +162,9 @@ public class UnitConnectionMgr : MonoBehaviour {
 					pitch = (float)Convert.ToDouble(parsed[9]);
 					yaw = (float)Convert.ToDouble(parsed[11]);
 				}*/
+				ctr = 0;
 				threadMutex.ReleaseMutex();
-
+				
 				
 			}
 			catch (Exception err)
@@ -149,8 +173,8 @@ public class UnitConnectionMgr : MonoBehaviour {
 			}
 		}
 	}
-
-
+	
+	
 	public void OnDisable() 
 	{ 
 		if ( receiveThread!= null) 
@@ -171,4 +195,3 @@ public class UnitConnectionMgr : MonoBehaviour {
 		threadMutex.ReleaseMutex();
 	}
 }
-

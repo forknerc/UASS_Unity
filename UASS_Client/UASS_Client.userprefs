@@ -1,11 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitConnectionMgr.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\RobotNetworkMgr.cs">
     <Files>
-      <File FileName="Assets\Scripts\UnitConnectionMgr.cs" Line="92" Column="9" />
-      <File FileName="Assets\Scripts\UnitMgr.cs" Line="49" Column="52" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="37" Column="16" />
-      <File FileName="Assets\Scripts\NetworkMgr.cs" Line="27" Column="31" />
+      <File FileName="Assets\Scripts\UnitConnectionMgr.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UnitMgr.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NetworkMgr.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\RobotNetworkMgr.cs" Line="93" Column="9" />
+      <File FileName="Assets\Scripts\InputMgr.cs" Line="85" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
