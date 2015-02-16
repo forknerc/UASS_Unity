@@ -4,11 +4,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-
 public class NetworkMgr : MonoBehaviour {
-
-
-
 //First section deals with hosting/joining rooms.
 //Seconds section deals with accepting robot connection requests.
 
@@ -26,12 +22,17 @@ public class NetworkMgr : MonoBehaviour {
 
 
 
-
+	public GameObject prefab;
 	private void StartUnityServer()
 	{
 		Network.InitializeServer(8, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
 		MasterServer.updateRate = 2;
+
+
+		GameObject temp = (GameObject)Network.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, 0);
+		Unit stats = (Unit)temp.GetComponent("Unit");
+		stats.IPAddress = "1.2.3.4";
 	}
 
 	private void StartUserServer()
@@ -139,24 +140,6 @@ public class NetworkMgr : MonoBehaviour {
 		if(ServerProcess != null)
 			ServerProcess.Kill ();
 	}
-
-	
-	////////////////////////////////////////////////////////////////////////
-	//
-	//Thread that waits for robot connection request
-	//1. Create UDP Socket with Port = 50000;
-	//2. Wait for connection request.
-	//3. Upon request, make following checks.
-	//		a. Does request contain all required parameters
-	//		b. Does robot not exist in the list (Can compare UDP packet content)
-	//		c. Does Robot not exist in game. 
-	//			Parse info into unit class then look through list of client's robot's 
-	//			ipaddresses from Unit script)
-	//		If All requirements met, add robot to list
-	//unitMgr.UnitConnectionList.Add(unit)
-
-
-
 
 	// Use this for initialization
 	void Start () {	
