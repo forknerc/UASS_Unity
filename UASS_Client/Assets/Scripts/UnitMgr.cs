@@ -21,7 +21,7 @@ public class UnitMgr : MonoBehaviour {
 
 	//Assumes robot has requested connection and is waiting for acknowledgement
 	//This function is called once the "Add Robot" button is clicked. 
-	public void AddUnit(Unit unitStats)
+	public string AddUnit(Unit unitStats)
 	{
 		GameObject newUnit = new GameObject();
 		switch(unitStats.UnitType)
@@ -38,13 +38,18 @@ public class UnitMgr : MonoBehaviour {
 			break;
 		}
 
+		// TODO add owner ID in here
+
 		Unit stats = (Unit)newUnit.GetComponent("Unit");
 		stats.CopyAttributes(unitStats);
 
 		myUnits.Add(newUnit);
 		allUnits.Add(newUnit);
 
-		//Send robot its unique ID
+		//Send robot its unique ID 
+
+		// return owner ID for unitConnection manager to send confirmation message
+		return stats.ID;
 	}
 
 

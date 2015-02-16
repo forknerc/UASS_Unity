@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Unit : MonoBehaviour{
+public class Unit : MonoBehaviour{ // might not need to inherit from monobehavior?
 	private string id;
 	public string ID
 	{
@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour{
 	}
 
 	public Vector3 Position;
+	public Vector3 PositionOffset;
 	public Vector3 Orientation;
 	public int UnitType;
 	public string Owner;

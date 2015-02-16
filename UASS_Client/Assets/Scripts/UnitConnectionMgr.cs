@@ -22,7 +22,13 @@ public class UnitConnectionMgr : MonoBehaviour {
 	// receive port
 	private int port = 8053; // define > init
 
+	// list of all units IP addresses
 	public List<IPAddress> unitIPs;
+
+	// reference to unit manager
+	public GameObject unitMgr;
+
+	private UnitMgr unitMgrScript;
 
 	// Use this for initialization
 	void Start () 
@@ -31,6 +37,8 @@ public class UnitConnectionMgr : MonoBehaviour {
 		posMutex = new Mutex();
 
 		unitIPs = new List<IPAddress>();
+
+		unitMgrScript = unitMgr.GetComponent<UnitMgr>();
 
 		InitSocket();
 	}
@@ -59,16 +67,6 @@ public class UnitConnectionMgr : MonoBehaviour {
 				Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
 				string msg = Encoding.UTF8.GetString(data);
 				Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
-				
-				// check to see if new unit (by IP)
-				/*existsFlag = false;
-				foreach (IPAddress ip in unitIPs)
-				{
-					if(ip.ToString() == anyIP.Address.ToString())
-					{
-						existsFlag = true;
-					}
-				}*/
 
 				// split message into position vector
 				posMutex.WaitOne(); // MOVE ME
@@ -91,6 +89,17 @@ public class UnitConnectionMgr : MonoBehaviour {
 						{
 							// make new unit for this IP address
 							Debug.Log("Creating new unit");
+							Unit newU = new Unit();
+							newU.Position = new Vector3(0.0f,0.0f,0.0f);
+							newU.PositionOffset = new Vector3(100.0f,100.0f,100.0f);
+							newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
+							newU.UnitType = Convert.ToInt32(parsed[1]);
+							newU.IPAddress = anyIP.Address.ToString();
+							newU.Port = anyIP.Port;
+							newU.IsSelected = false;
+							string newID = unitMgrScript.AddUnit(newU);
+
+							// send message to ROS node 
 						}
 						else
 						{
