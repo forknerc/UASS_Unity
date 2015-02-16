@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 
 public class SelectionMgr : MonoBehaviour {
-	List<GameObject> selectedUnits;
+	public List<GameObject> selectedUnits;
 	
 	// Use this for initialization
 	void Start () {
 		selectedUnits = new List<GameObject>();
 	}
 
-	void AddUnitToSelectedList(GameObject unit)
+	public void AddUnitToSelectedList(GameObject unit)
 	{
 		selectedUnits.Add(unit);
 		Unit stats = (Unit)unit.GetComponent("Unit");
 		stats.IsSelected = true;
 	}
 
-	void AddUnitsToSelectedList(List<GameObject> units)
+	public void AddUnitsToSelectedList(List<GameObject> units)
 	{
 		foreach(GameObject unit in units)
 		{
@@ -28,14 +28,14 @@ public class SelectionMgr : MonoBehaviour {
 		}
 	}
 
-	void RemoveUnitFromSelectedList(GameObject unit)
+	public void RemoveUnitFromSelectedList(GameObject unit)
 	{
 		selectedUnits.Remove(unit);
 		Unit stats = (Unit)unit.GetComponent("Unit");
 		stats.IsSelected = false;
 	}
 
-	void RemoveAllUnits()
+	public void RemoveAllUnits()
 	{
 		foreach(GameObject unit in selectedUnits)
 		{
