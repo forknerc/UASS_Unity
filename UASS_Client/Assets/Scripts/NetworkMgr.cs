@@ -20,19 +20,11 @@ public class NetworkMgr : MonoBehaviour {
 	private string UserIpAddress;
 	private int UserPort = 23467;
 
-
-
-	public GameObject prefab;
 	private void StartUnityServer()
 	{
 		Network.InitializeServer(8, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
 		MasterServer.updateRate = 2;
-
-
-		GameObject temp = (GameObject)Network.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, 0);
-		Unit stats = (Unit)temp.GetComponent("Unit");
-		stats.IPAddress = "1.2.3.4";
 	}
 
 	private void StartUserServer()

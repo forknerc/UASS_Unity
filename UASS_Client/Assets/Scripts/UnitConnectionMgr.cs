@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using System;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using UnityEngine;
+using UASS.unitInfoStruct;
 
 public class UnitConnectionMgr : MonoBehaviour {
 
@@ -30,11 +30,17 @@ public class UnitConnectionMgr : MonoBehaviour {
 
 	private UnitMgr unitMgrScript;
 
+	private string newUnitsID;
+	private newRobotInfo newU;
+	private bool makeNewUnit;
+
 	// Use this for initialization
 	void Start () 
 	{
 	
 		threadMutex = new Mutex();
+
+		makeNewUnit = false;
 
 		unitIPs = new List<IPAddress>();
 
@@ -89,16 +95,25 @@ public class UnitConnectionMgr : MonoBehaviour {
 						{
 							// make new unit for this IP address
 							Debug.Log("Creating new unit");
-							Unit newU = new Unit();
+							newU = new newRobotInfo();
 							newU.Position = new Vector3(0.0f,0.0f,0.0f);
 							newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
 							newU.UnitType = Convert.ToInt32(parsed[1]);
 							newU.IPAddress = anyIP.Address.ToString();
 							newU.Port = anyIP.Port;
-							newU.IsSelected = false;
-							string newID = unitMgrScript.AddUnit(newU);
+							//newU.IsSelected = false;
+
+							makeNewUnit = true;
+
+							// release mutex to let the main thread add a new unit
+							threadMutex.ReleaseMutex();
+							Thread.Sleep(250);
+							threadMutex.WaitOne();
 
 							// send message to ROS node 
+							IPEndPoint sendDest = new IPEndPoint(anyIP.Address, anyIP.Port);
+							Byte[] sendMsg = Encoding.ASCII.GetBytes("0 " + newUnitsID);
+							client.Send(sendMsg, sendMsg.Length, sendDest);
 						}
 						else
 						{
@@ -134,6 +149,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 		}
 	}
 
+
 	public void OnDisable() 
 	{ 
 		if ( receiveThread!= null) 
@@ -145,7 +161,13 @@ public class UnitConnectionMgr : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
+		threadMutex.WaitOne();
+		if(makeNewUnit)
+		{
+			makeNewUnit = false;
+			//newUnitsID = unitMgrScript.AddUnit(newU);
+		}
+		threadMutex.ReleaseMutex();
 	}
 }
 

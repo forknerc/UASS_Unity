@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Unit : MonoBehaviour{ // might not need to inherit from monobehavior?
+public class Unit : MonoBehaviour{ 
 	private string id;
 	public string ID
 	{
