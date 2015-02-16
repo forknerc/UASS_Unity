@@ -11,7 +11,7 @@ using System.Threading;
 public class UnitConnectionMgr : MonoBehaviour {
 
 	// mutex lock
-	public Mutex posMutex;
+	public Mutex threadMutex;
 
 	// receiving Thread
 	private Thread receiveThread;
@@ -34,7 +34,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 	void Start () 
 	{
 	
-		posMutex = new Mutex();
+		threadMutex = new Mutex();
 
 		unitIPs = new List<IPAddress>();
 
@@ -64,12 +64,12 @@ public class UnitConnectionMgr : MonoBehaviour {
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 				byte[] data = client.Receive(ref anyIP);
 
-				Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
+				//Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
 				string msg = Encoding.UTF8.GetString(data);
 				Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
 
 				// split message into position vector
-				posMutex.WaitOne(); // MOVE ME
+				threadMutex.WaitOne(); // MOVE ME
 				string[] parsed = msg.Split(' ');
 				// 
 				switch(parsed[0])
@@ -78,9 +78,9 @@ public class UnitConnectionMgr : MonoBehaviour {
 					case "0":
 						// check to see if robot already requested to join
 						existsFlag = false;
-						foreach (IPAddress ip in unitIPs)
+						foreach (GameObject gameO in unitMgrScript.allUnits)
 						{
-							if(ip.ToString() == anyIP.Address.ToString())
+							if(gameO.GetComponent<Unit>().IPAddress == anyIP.Address.ToString())
 							{
 								existsFlag = true;
 							}
@@ -91,7 +91,6 @@ public class UnitConnectionMgr : MonoBehaviour {
 							Debug.Log("Creating new unit");
 							Unit newU = new Unit();
 							newU.Position = new Vector3(0.0f,0.0f,0.0f);
-							newU.PositionOffset = new Vector3(100.0f,100.0f,100.0f);
 							newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
 							newU.UnitType = Convert.ToInt32(parsed[1]);
 							newU.IPAddress = anyIP.Address.ToString();
@@ -124,7 +123,7 @@ public class UnitConnectionMgr : MonoBehaviour {
 					pitch = (float)Convert.ToDouble(parsed[9]);
 					yaw = (float)Convert.ToDouble(parsed[11]);
 				}*/
-				posMutex.ReleaseMutex();
+				threadMutex.ReleaseMutex();
 
 				
 			}

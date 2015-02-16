@@ -12,7 +12,6 @@ public class Unit : MonoBehaviour{ // might not need to inherit from monobehavio
 	}
 
 	public Vector3 Position;
-	public Vector3 PositionOffset;
 	public Vector3 Orientation;
 	public int UnitType;
 	public string Owner;
@@ -42,5 +41,6 @@ public class Unit : MonoBehaviour{ // might not need to inherit from monobehavio
 		IPAddress=U.IPAddress;
 		Port=U.Port;
 	}
+
 
 }
