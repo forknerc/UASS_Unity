@@ -84,7 +84,7 @@ public class InputMgr : MonoBehaviour {
 				{
 					foreach(GameObject unit in selectionMgr.selectedUnits)
 					{
-						;
+						unit.ToString();
 						//unit.GetComponent<Unit>().sendCommand(pos);
 					}
 				}
