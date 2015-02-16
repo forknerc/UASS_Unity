@@ -17,3 +17,6 @@
 sysinfo.txt
 *.csproj
 *.csproj
+*.csproj
+*.csproj
+*.userprefs

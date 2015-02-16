@@ -5,6 +5,9 @@ using System;
 using UASS.unitInfoStruct;
 
 public class Unit : MonoBehaviour{ 
+
+
+	public GameObject SelectionCircle;
 	private string id;
 	public string ID
 	{
@@ -28,6 +31,7 @@ public class Unit : MonoBehaviour{
 		set
 		{
 			isSelected = value;
+			SelectionCircle.SetActive(value);
 		}
 	}
 
@@ -43,5 +47,10 @@ public class Unit : MonoBehaviour{
 		Port=U.Port;
 	}
 
+
+	void Start()
+	{
+		SelectionCircle = transform.FindChild("SelectionCircle").gameObject;
+	}
 
 }
