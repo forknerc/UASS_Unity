@@ -7,14 +7,9 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using UASS.unitInfoStruct;
+using CielaSpike;
 
 public class RobotNetworkMgr : MonoBehaviour {
-
-	// mutex lock
-	public Mutex threadMutex;
-	
-	// receiving Thread
-	private Thread receiveThread;
 	
 	// udpclient object
 	private UdpClient client;
@@ -38,42 +33,47 @@ public class RobotNetworkMgr : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		
-		threadMutex = new Mutex();
-		
 		makeNewUnit = false;
-
 		tripWire = true;
-		
 		unitIPs = new List<IPAddress>();
 		
 		unitMgrScript = unitMgr.GetComponent<UnitMgr>();
-		
-		InitSocket();
+		//InitSocket();
+		//client.Close ();
+		this.StartCoroutineAsync(ReceiveData());
 	}
-	
+
+
+	void OnDestroy()
+	{
+		client.Close ();
+
+		this.StopAllCoroutines();
+	}
+
+	/*
 	void InitSocket()
 	{	
 		receiveThread = new Thread(
-			new ThreadStart(ReceiveData));
+		new ThreadStart(ReceiveData));
 		receiveThread.IsBackground = true;
 		receiveThread.Start();
 	}
-	
+	*/
 	// receive thread
-	private  void ReceiveData()
+	IEnumerator ReceiveData()
 	{
+		yield return Ninja.JumpBack;
 		bool existsFlag = false;
 
-		
 		client = new UdpClient(port);
 		while (true)
 		{
 			int ctr = 0;
 			Debug.Log("made it to 0-" + ctr);
 			ctr++;
-			try
-			{
+
+
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 				byte[] data = client.Receive(ref anyIP);
 				
@@ -109,9 +109,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 						Debug.Log("made it to 3-" + ctr);
 						ctr++;
 
-						// get mutex lock
-						//threadMutex.WaitOne();
-
+						
 						// make new unit for this IP address
 						Debug.Log("Creating new unit");
 						newU = new newRobotInfo();
@@ -121,22 +119,23 @@ public class RobotNetworkMgr : MonoBehaviour {
 						newU.IPAddress = anyIP.Address.ToString();
 						newU.Port = 8051;
 						newU.IsSelected = false;
+					
 
-						// flag main thread to make new unit
-						makeNewUnit = true;
-						
-						// release mutex to let the main thread add a new unit
+						//make new unit
+						yield return Ninja.JumpToUnity;
+						newUnitsID = unitMgrScript.AddUnit(newU);
+
+
+						yield return Ninja.JumpBack;
 
 						Debug.Log("made it to 4-" + ctr);
 						ctr++;
 
-						//threadMutex.ReleaseMutex();
 						Thread.Sleep(500);
-						//threadMutex.WaitOne();
-						//threadMutex.ReleaseMutex();
 						Debug.Log("made it to 5-" + ctr);
 						ctr++;
-						
+
+
 						// send message to ROS node 
 						IPEndPoint sendDest = new IPEndPoint(anyIP.Address, 8051);
 						Byte[] sendMsg = Encoding.ASCII.GetBytes("1 " + newUnitsID);
@@ -154,14 +153,8 @@ public class RobotNetworkMgr : MonoBehaviour {
 					// position update from robot
 				case "3":
 
-					//Mutex lock stuff
-					//
-					//
-					//
-					//threadMutex.WaitOne();
-					//Critical information
+					yield return Ninja.JumpToUnity;
 					GameObject test = unitMgrScript.FindUnit(parsed[1]);
-
 					float roll = (float)Convert.ToDouble(parsed[5]);
 					float pitch = (float)Convert.ToDouble(parsed[6]);
 					float yaw = (float)Convert.ToDouble(parsed[7]);
@@ -172,10 +165,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 						test.transform.position = new Vector3(float.Parse(parsed[2]), float.Parse(parsed[3]), float.Parse(parsed[4]));
 						test.transform.rotation = Quaternion.Euler(-pitch, yaw, -roll);
 					}
-					//Releasete mutex lock stuff
-					//threadMutex.ReleaseMutex();
-
-
+					yield return Ninja.JumpBack;
 					break;
 				default:
 					Debug.Log("Mgs not in protocol");
@@ -193,42 +183,13 @@ public class RobotNetworkMgr : MonoBehaviour {
 				}*/
 				ctr = 0;
 
-				
-				
-			}
-			catch (Exception err)
-			{
-				print(err.ToString());
-			}
 		}
 	}
 	
-	
-	public void OnDisable() 
-	{ 
-		if ( receiveThread!= null) 
-			receiveThread.Abort(); 
-		
-		client.Close(); 
-	} 
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
-		if(tripWire)
-		{
-			//bool lockObtained = threadMutex.WaitOne(500);
-			if(makeNewUnit)
-			{
-				makeNewUnit = false;
-				if(newU.id != "")
-				{
-					newUnitsID = unitMgrScript.AddUnit(newU);
-				}
-				//threadMutex.ReleaseMutex();
-			}
-		}
 
-		tripWire = !tripWire;
 	}
 }

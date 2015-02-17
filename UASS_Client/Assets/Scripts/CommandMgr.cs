@@ -63,7 +63,7 @@ public class CommandMgr : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		SendMessage ("127.0.0.1", 8051, "2 0 1 1 1");
 	}
 	
 	// Update is called once per frame
