@@ -26,7 +26,7 @@ public class NetworkMgr : MonoBehaviour {
 		MasterServer.RegisterHost(typeName, gameName);
 		MasterServer.updateRate = 2;
 
-		GameObject temp = (GameObject)Network.Instantiate(tempFab, new Vector3(0, 0, 0), Quaternion.identity, 0);
+		//GameObject temp = (GameObject)Network.Instantiate(tempFab, new Vector3(0, 0, 0), Quaternion.identity, 0);
 		GameObject temp2 = (GameObject)Network.Instantiate(tempFab, new Vector3(5, 0, 5), Quaternion.identity, 0);
 
 	}

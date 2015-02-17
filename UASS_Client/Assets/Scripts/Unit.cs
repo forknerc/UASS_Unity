@@ -7,7 +7,7 @@ using UASS.unitInfoStruct;
 public class Unit : MonoBehaviour{ 
 	public GameObject SelectionCircle;
 
-	private string id;
+	public string id;
 	public string ID
 	{
 		get{return id;}
@@ -30,7 +30,8 @@ public class Unit : MonoBehaviour{
 		set
 		{
 			isSelected = value;
-			SelectionCircle.SetActive(value);
+			if(SelectionCircle != null)
+				SelectionCircle.SetActive(value);
 		}
 	}
 

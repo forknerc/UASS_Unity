@@ -25,6 +25,21 @@ public class UnitMgr : MonoBehaviour {
 
 	}
 
+	public GameObject FindUnit(string ID)
+	{
+		foreach(GameObject unit in myUnits)
+		{
+			Unit stats = (Unit)unit.GetComponent("Unit");
+			if(stats.ID == ID)
+			{
+				return unit;
+			}
+		}
+		return null;
+	}
+
+
+
 	//Assumes robot has requested connection and is waiting for acknowledgement
 	//This function is called once the "Add Robot" button is clicked. 
 	public string AddUnit(newRobotInfo unitStats)
@@ -46,7 +61,7 @@ public class UnitMgr : MonoBehaviour {
 
 		if(newUnit != null)
 		{
-			Unit stats = (Unit)newUnit.GetComponent("Unit");
+			Unit stats = newUnit.GetComponent<Unit>();
 			stats.CopyAttributes(unitStats);
 			stats.ID = (newUnit.GetComponent<NetworkView>().viewID.ToString().Split())[1];
 			stats.Owner = newUnit.GetComponent<NetworkView>().viewID.owner.guid.ToString();

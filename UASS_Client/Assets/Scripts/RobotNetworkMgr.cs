@@ -67,21 +67,21 @@ public class RobotNetworkMgr : MonoBehaviour {
 		while (true)
 		{
 			int ctr = 0;
-			Debug.Log("made it to " + ctr);
+			Debug.Log("made it to 0-" + ctr);
 			ctr++;
 			try
 			{
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 				byte[] data = client.Receive(ref anyIP);
 				
-				Debug.Log("made it to " + ctr);
+				Debug.Log("made it to 1-" + ctr);
 				ctr++;
 
 				//Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
 				string msg = Encoding.UTF8.GetString(data);
 				Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
 				
-				Debug.Log("made it to " + ctr);
+				Debug.Log("made it to 2-" + ctr);
 				ctr++;
 
 				// split message into position vector
@@ -103,7 +103,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 					}*/
 					if(existsFlag == false)
 					{
-						Debug.Log("made it to " + ctr);
+						Debug.Log("made it to 3-" + ctr);
 						ctr++;
 
 						// make new unit for this IP address
@@ -120,14 +120,14 @@ public class RobotNetworkMgr : MonoBehaviour {
 						
 						// release mutex to let the main thread add a new unit
 
-						Debug.Log("made it to " + ctr);
+						Debug.Log("made it to 4-" + ctr);
 						ctr++;
 
 						threadMutex.ReleaseMutex();
 						Thread.Sleep(250);
 						threadMutex.WaitOne();
 
-						Debug.Log("made it to " + ctr);
+						Debug.Log("made it to 5-" + ctr);
 						ctr++;
 						
 						// send message to ROS node 
@@ -136,7 +136,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 						client.Send(sendMsg, sendMsg.Length, sendDest);
 						Debug.Log("Send message to " + anyIP.Address.ToString() + ": 1 " + newUnitsID); 
 
-						Debug.Log("made it to " + ctr);
+						Debug.Log("made it to 6-" + ctr);
 						ctr++;
 					}
 					else
@@ -146,7 +146,22 @@ public class RobotNetworkMgr : MonoBehaviour {
 					break;
 					// position update from robot
 				case "3":
-					Debug.Log("Unit update position msg");
+
+					//Mutex lock stuff
+					//
+					//
+					//
+
+					//Critical information
+					GameObject test = unitMgrScript.FindUnit(parsed[1]);
+					Debug.Log("Found unit");
+
+					if(test != null)
+						test.transform.position = new Vector3(float.Parse(parsed[2]), float.Parse(parsed[3]), float.Parse(parsed[4]));
+					//Releasete mutex lock stuff
+
+
+
 					break;
 				default:
 					Debug.Log("Mgs not in protocol");
@@ -186,12 +201,15 @@ public class RobotNetworkMgr : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+
 		threadMutex.WaitOne();
 		if(makeNewUnit)
 		{
 			makeNewUnit = false;
-			newUnitsID = unitMgrScript.AddUnit(newU);
+			if(newU.id != "")
+				newUnitsID = unitMgrScript.AddUnit(newU);
 		}
 		threadMutex.ReleaseMutex();
+
 	}
 }
