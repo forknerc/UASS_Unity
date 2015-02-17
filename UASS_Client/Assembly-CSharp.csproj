@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\CommandMgr.cs" />
      <Compile Include="Assets\Scripts\InputMgr.cs" />
      <Compile Include="Assets\Scripts\NetworkMgr.cs" />
+     <Compile Include="Assets\Scripts\RobotConnectionMgrV2.cs" />
      <Compile Include="Assets\Scripts\RobotNetworkMgr.cs" />
      <Compile Include="Assets\Scripts\SelectionMgr.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />

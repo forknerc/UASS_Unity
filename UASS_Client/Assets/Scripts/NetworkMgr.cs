@@ -7,7 +7,7 @@ using System.Threading;
 public class NetworkMgr : MonoBehaviour {
 //First section deals with hosting/joining rooms.
 //Seconds section deals with accepting robot connection requests.
-	public GameObject tempFab;
+	//public GameObject tempFab;
 
 	//Server Related Variables
 	private const string typeName = "UASS_Server";
@@ -27,7 +27,7 @@ public class NetworkMgr : MonoBehaviour {
 		MasterServer.updateRate = 2;
 
 		//GameObject temp = (GameObject)Network.Instantiate(tempFab, new Vector3(0, 0, 0), Quaternion.identity, 0);
-		GameObject temp2 = (GameObject)Network.Instantiate(tempFab, new Vector3(5, 0, 5), Quaternion.identity, 0);
+		//GameObject temp2 = (GameObject)Network.Instantiate(tempFab, new Vector3(5, 0, 5), Quaternion.identity, 0);
 
 	}
 

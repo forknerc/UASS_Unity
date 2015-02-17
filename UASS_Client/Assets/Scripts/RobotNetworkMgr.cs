@@ -33,6 +33,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 	private string newUnitsID;
 	private newRobotInfo newU;
 	private bool makeNewUnit;
+	private bool tripWire;
 	
 	// Use this for initialization
 	void Start () 
@@ -41,6 +42,8 @@ public class RobotNetworkMgr : MonoBehaviour {
 		threadMutex = new Mutex();
 		
 		makeNewUnit = false;
+
+		tripWire = true;
 		
 		unitIPs = new List<IPAddress>();
 		
@@ -85,7 +88,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 				ctr++;
 
 				// split message into position vector
-				threadMutex.WaitOne(); // MOVE ME
+
 				string[] parsed = msg.Split(' ');
 				// 
 				switch(parsed[0])
@@ -106,6 +109,9 @@ public class RobotNetworkMgr : MonoBehaviour {
 						Debug.Log("made it to 3-" + ctr);
 						ctr++;
 
+						// get mutex lock
+						//threadMutex.WaitOne();
+
 						// make new unit for this IP address
 						Debug.Log("Creating new unit");
 						newU = new newRobotInfo();
@@ -115,7 +121,8 @@ public class RobotNetworkMgr : MonoBehaviour {
 						newU.IPAddress = anyIP.Address.ToString();
 						newU.Port = 8051;
 						newU.IsSelected = false;
-						 
+
+						// flag main thread to make new unit
 						makeNewUnit = true;
 						
 						// release mutex to let the main thread add a new unit
@@ -123,10 +130,10 @@ public class RobotNetworkMgr : MonoBehaviour {
 						Debug.Log("made it to 4-" + ctr);
 						ctr++;
 
-						threadMutex.ReleaseMutex();
-						Thread.Sleep(250);
-						threadMutex.WaitOne();
-
+						//threadMutex.ReleaseMutex();
+						Thread.Sleep(500);
+						//threadMutex.WaitOne();
+						//threadMutex.ReleaseMutex();
 						Debug.Log("made it to 5-" + ctr);
 						ctr++;
 						
@@ -151,15 +158,22 @@ public class RobotNetworkMgr : MonoBehaviour {
 					//
 					//
 					//
-
+					//threadMutex.WaitOne();
 					//Critical information
 					GameObject test = unitMgrScript.FindUnit(parsed[1]);
-					Debug.Log("Found unit");
+
+					float roll = (float)Convert.ToDouble(parsed[5]);
+					float pitch = (float)Convert.ToDouble(parsed[6]);
+					float yaw = (float)Convert.ToDouble(parsed[7]);
 
 					if(test != null)
+					{
+						Debug.Log("Found unit");
 						test.transform.position = new Vector3(float.Parse(parsed[2]), float.Parse(parsed[3]), float.Parse(parsed[4]));
+						test.transform.rotation = Quaternion.Euler(-pitch, yaw, -roll);
+					}
 					//Releasete mutex lock stuff
-
+					//threadMutex.ReleaseMutex();
 
 
 					break;
@@ -178,7 +192,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 					yaw = (float)Convert.ToDouble(parsed[11]);
 				}*/
 				ctr = 0;
-				threadMutex.ReleaseMutex();
+
 				
 				
 			}
@@ -201,15 +215,20 @@ public class RobotNetworkMgr : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-
-		threadMutex.WaitOne();
-		if(makeNewUnit)
+		if(tripWire)
 		{
-			makeNewUnit = false;
-			if(newU.id != "")
-				newUnitsID = unitMgrScript.AddUnit(newU);
+			//bool lockObtained = threadMutex.WaitOne(500);
+			if(makeNewUnit)
+			{
+				makeNewUnit = false;
+				if(newU.id != "")
+				{
+					newUnitsID = unitMgrScript.AddUnit(newU);
+				}
+				//threadMutex.ReleaseMutex();
+			}
 		}
-		threadMutex.ReleaseMutex();
 
+		tripWire = !tripWire;
 	}
 }
