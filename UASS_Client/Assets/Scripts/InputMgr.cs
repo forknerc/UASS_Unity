@@ -35,10 +35,13 @@ public class InputMgr : MonoBehaviour {
 			// if the ray hits something
 			if(Physics.Raycast(rayL,out hitL,Mathf.Infinity))
 			{
+				Debug.Log(hitL.transform.gameObject.tag);
+
 				if(hitL.collider.tag == "Unit")
 				{
 					GameObject unit = hitL.transform.gameObject;
-					if ( Input.GetKeyDown(KeyCode.LeftControl) == false )
+			
+					if ( Input.GetKey(KeyCode.LeftControl) == false )
 					{
 						selectionMgr.RemoveAllUnits();
 						selectionMgr.AddUnitToSelectedList(unit);
@@ -50,18 +53,12 @@ public class InputMgr : MonoBehaviour {
 						else
 							selectionMgr.AddUnitToSelectedList(unit);
 					}
-
-					// select drone it it is clicked
-					Debug.Log("hit robitz");
-				}
-				else 
-				{
-					// hit the ground
-					Debug.Log("hit ground");
-					//sMgrS.deselectAll();
 				}
 				pos = hitL.point;
 			}
+			else if ( Input.GetKey(KeyCode.LeftControl) == false )
+				selectionMgr.RemoveAllUnits();
+
 		}
 		
 		// right click

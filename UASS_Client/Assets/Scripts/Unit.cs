@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour{
 	public int Port;
 
 
-	private bool isSelected;
+	public bool isSelected;
 	public bool IsSelected
 	{
 		get{return isSelected;}
@@ -49,6 +49,7 @@ public class Unit : MonoBehaviour{
 	void Start()
 	{
 		SelectionCircle = transform.FindChild("selectionCircle").gameObject;
+		IsSelected = false;
 	}
 
 }
