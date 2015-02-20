@@ -20,9 +20,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 	// list of all units IP addresses
 	public List<IPAddress> unitIPs;
 	
-	// reference to unit manager
-	public GameObject unitMgr;
-	
 	private UnitMgr unitMgrScript;
 	
 	private string newUnitsID;
@@ -36,10 +33,8 @@ public class RobotNetworkMgr : MonoBehaviour {
 		makeNewUnit = false;
 		tripWire = true;
 		unitIPs = new List<IPAddress>();
-		
-		unitMgrScript = unitMgr.GetComponent<UnitMgr>();
+		unitMgrScript = GetComponent<UnitMgr>();
 		//InitSocket();
-		//client.Close ();
 		this.StartCoroutineAsync(ReceiveData());
 	}
 
@@ -47,7 +42,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 	void OnDestroy()
 	{
 		client.Close ();
-
 		this.StopAllCoroutines();
 	}
 
@@ -65,9 +59,11 @@ public class RobotNetworkMgr : MonoBehaviour {
 	{
 		yield return Ninja.JumpBack;
 		bool existsFlag = false;
+		bool SocketStable = true;
+		byte[] data = new Byte[0];
 
 		client = new UdpClient(port);
-		while (true)
+		while (SocketStable)
 		{
 			int ctr = 0;
 			Debug.Log("made it to 0-" + ctr);
@@ -75,8 +71,18 @@ public class RobotNetworkMgr : MonoBehaviour {
 
 
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
-				byte[] data = client.Receive(ref anyIP);
+			try
+			{
+				data = client.Receive(ref anyIP);
+			}
+			catch
+			{
+				Debug.Log("client receive port closed");
+				SocketStable = false;
+			}
 				
+			if(SocketStable)
+			{
 				Debug.Log("made it to 1-" + ctr);
 				ctr++;
 
@@ -182,7 +188,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 					yaw = (float)Convert.ToDouble(parsed[11]);
 				}*/
 				ctr = 0;
-
+			}
 		}
 	}
 	

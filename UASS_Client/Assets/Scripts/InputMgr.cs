@@ -8,15 +8,13 @@ public class InputMgr : MonoBehaviour {
 
 	private Vector3 pos;
 	
-	public GameObject selectionMgrObj;
 	public SelectionMgr selectionMgr;
 
 
 
 	// Use this for initialization
 	void Start () {
-		selectionMgrObj = GameObject.Find("SelectionManager");
-		selectionMgr = selectionMgrObj.GetComponent<SelectionMgr>();
+		selectionMgr = GetComponent<SelectionMgr>();
 	}
 	
 	// Update is called once per frame
