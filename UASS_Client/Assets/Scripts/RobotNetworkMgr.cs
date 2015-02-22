@@ -45,15 +45,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 		this.StopAllCoroutines();
 	}
 
-	/*
-	void InitSocket()
-	{	
-		receiveThread = new Thread(
-		new ThreadStart(ReceiveData));
-		receiveThread.IsBackground = true;
-		receiveThread.Start();
-	}
-	*/
 	// receive thread
 	IEnumerator ReceiveData()
 	{
@@ -123,7 +114,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 						newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
 						newU.UnitType = Convert.ToInt32(parsed[1]);
 						newU.IPAddress = anyIP.Address.ToString();
-						newU.Port = 8051;
+						newU.Port = 8052;
 						newU.IsSelected = false;
 					
 

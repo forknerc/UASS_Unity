@@ -30,7 +30,7 @@ public class CommandMgr : MonoBehaviour {
 
 	private string PosToString(Vector3 DesiredPos)
 	{
-		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos;
+		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos.z;
 	}
 
 
