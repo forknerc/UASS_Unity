@@ -28,12 +28,17 @@ public class CommandMgr : MonoBehaviour {
 		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos + " " + DesiredOri.x + " " + DesiredOri.y + " " + DesiredOri;
 	}
 
+	private string PosToString(Vector3 DesiredPos)
+	{
+		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos;
+	}
+
 	public void SendGoToCommand(GameObject Unit, Vector3 DesiredPos, Vector3 DesiredOri)
 	{
 		Unit stats = (Unit)Unit.GetComponent("Unit");
 		string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosAndOriToString(DesiredPos, DesiredOri);
 		//Send to robot with stats.ipAddress and stats.port
-
+		Debug.Log ("Sending command: " + cmdMsg);
 		SendMessage (stats.IPAddress, stats.Port, cmdMsg);
 	}
 
@@ -44,13 +49,33 @@ public class CommandMgr : MonoBehaviour {
 			Unit stats = (Unit)unit.GetComponent("Unit");
 			string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosAndOriToString(DesiredPos, DesiredOri);
 			//Send to robot with stats.ipAddress and stats.port
-			
+			Debug.Log ("Sending command: " + cmdMsg);
 			SendMessage (stats.IPAddress, stats.Port, cmdMsg);
 		}
 		
 	}
 
-
+	public void Move(GameObject Unit, Vector3 DesiredPos)
+	{
+		Unit stats = (Unit)Unit.GetComponent("Unit");
+		string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(DesiredPos);
+		//Send to robot with stats.ipAddress and stats.port
+		Debug.Log ("Sending command: " + cmdMsg);
+		SendMessage (stats.IPAddress, stats.Port, cmdMsg);
+	}
+	
+	public void Move(List<GameObject> Units, Vector3 DesiredPos)
+	{
+		foreach(GameObject unit in Units)
+		{
+			Unit stats = (Unit)unit.GetComponent("Unit");
+			string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(DesiredPos);
+			//Send to robot with stats.ipAddress and stats.port
+			Debug.Log ("Sending command: " + cmdMsg);
+			SendMessage (stats.IPAddress, stats.Port, cmdMsg);
+		}
+		
+	}
 
 
 	void SendMessage(string ipAddress, int port, string msg)

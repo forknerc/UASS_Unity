@@ -7,10 +7,12 @@ public class InputMgr : MonoBehaviour {
 	Vector3 point;
 	private Vector3 pos;
 	public SelectionMgr selectionMgr;
+	public CommandMgr commandMgr;
 
 	// Use this for initialization
 	void Start () {
 		selectionMgr = GetComponent<SelectionMgr>();
+		commandMgr = GetComponent<CommandMgr>();
 	}
 	
 	// Update is called once per frame
@@ -75,19 +77,15 @@ public class InputMgr : MonoBehaviour {
 				pos = hitR.point;
 				
 				// if in designated movement range
-				if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
-				{
-					foreach(GameObject unit in selectionMgr.selectedUnits)
-					{
-						unit.ToString();
-						//unit.GetComponent<Unit>().sendCommand(pos);
-					}
-				}
-				else 
-				{
+				//if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
+				//{
+					commandMgr.Move(selectionMgr.selectedUnits, pos);
+				//}
+				//else 
+				//{
 					// click out of movement range
-					Debug.Log("move out of bounds");
-				}
+				//	Debug.Log("move out of bounds");
+				//}
 			}
 			else
 			{
