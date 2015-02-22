@@ -5,12 +5,8 @@ public class InputMgr : MonoBehaviour {
 	public float distance = 5.0f;
 	Ray ray;
 	Vector3 point;
-
 	private Vector3 pos;
-	
 	public SelectionMgr selectionMgr;
-
-
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +17,11 @@ public class InputMgr : MonoBehaviour {
 	void Update () {
 		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		point = ray.origin + (ray.direction * distance);
-
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast (ray, out hit)) {
+			// Create a particle if hit
+			pos=hit.point;
+		}
 
 		if(Input.GetMouseButtonDown(0))
 		{
@@ -102,7 +102,7 @@ public class InputMgr : MonoBehaviour {
 
 	void OnGUI()
 	{	
-		GUI.TextField(new Rect(200, 000, 200, 25), point.ToString());
+		GUI.TextField(new Rect(200, 000, 200, 25), pos.ToString());
 	}
 
 }

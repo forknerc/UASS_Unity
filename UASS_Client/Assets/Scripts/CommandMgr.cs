@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 using System.Net;
-using System.Net;
 using System.Collections.Generic;
 
 /*Command message format
