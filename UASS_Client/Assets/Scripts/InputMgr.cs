@@ -79,7 +79,7 @@ public class InputMgr : MonoBehaviour {
 				// if in designated movement range
 				//if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
 				//{
-					commandMgr.Move(selectionMgr.selectedUnits, pos);
+				commandMgr.GoTo(selectionMgr.selectedUnits, pos);
 				//}
 				//else 
 				//{

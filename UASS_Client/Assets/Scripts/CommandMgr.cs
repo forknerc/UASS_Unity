@@ -33,6 +33,8 @@ public class CommandMgr : MonoBehaviour {
 		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos;
 	}
 
+
+	/*
 	public void SendGoToCommand(GameObject Unit, Vector3 DesiredPos, Vector3 DesiredOri)
 	{
 		Unit stats = (Unit)Unit.GetComponent("Unit");
@@ -54,8 +56,10 @@ public class CommandMgr : MonoBehaviour {
 		}
 		
 	}
+	*/
 
-	public void Move(GameObject Unit, Vector3 DesiredPos)
+
+	public void GoTo(GameObject Unit, Vector3 DesiredPos)
 	{
 		Unit stats = (Unit)Unit.GetComponent("Unit");
 		string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(DesiredPos);
@@ -64,7 +68,7 @@ public class CommandMgr : MonoBehaviour {
 		SendMessage (stats.IPAddress, stats.Port, cmdMsg);
 	}
 	
-	public void Move(List<GameObject> Units, Vector3 DesiredPos)
+	public void GoTo(List<GameObject> Units, Vector3 DesiredPos)
 	{
 		foreach(GameObject unit in Units)
 		{
@@ -87,7 +91,6 @@ public class CommandMgr : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SendMessage ("127.0.0.1", 8051, "2 0 1 1 1");
 	}
 	
 	// Update is called once per frame
