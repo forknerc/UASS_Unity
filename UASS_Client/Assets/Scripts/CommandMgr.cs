@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using System.Net;
 using System.Collections.Generic;
+using System;
 
 /*Command message format
 MSGType	ID	CmdType	CmdSpecificData 
@@ -25,7 +26,7 @@ public class CommandMgr : MonoBehaviour {
 
 	private string PosAndOriToString(Vector3 DesiredPos, Vector3 DesiredOri)
 	{
-		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos + " " + DesiredOri.x + " " + DesiredOri.y + " " + DesiredOri;
+		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos.z + " " + DesiredOri.x + " " + DesiredOri.y + " " + DesiredOri.z;
 	}
 
 	private string PosToString(Vector3 DesiredPos)
@@ -57,23 +58,16 @@ public class CommandMgr : MonoBehaviour {
 		
 	}
 	*/
-
-
-	public void GoTo(GameObject Unit, Vector3 DesiredPos)
-	{
-		Unit stats = (Unit)Unit.GetComponent("Unit");
-		string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(DesiredPos);
-		//Send to robot with stats.ipAddress and stats.port
-		Debug.Log ("Sending command: " + cmdMsg);
-		SendMessage (stats.IPAddress, stats.Port, cmdMsg);
-	}
 	
 	public void GoTo(List<GameObject> Units, Vector3 DesiredPos)
 	{
 		foreach(GameObject unit in Units)
 		{
 			Unit stats = (Unit)unit.GetComponent("Unit");
-			string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(DesiredPos);
+			Vector3 newPos = new Vector3((float)Math.Round(DesiredPos.x, 2),  
+										 (float)Math.Round(DesiredPos.z, 2), 
+										 (float)Math.Round(unit.transform.position.y, 2));
+			string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(newPos);
 			//Send to robot with stats.ipAddress and stats.port
 			Debug.Log ("Sending command: " + cmdMsg);
 			SendMessage (stats.IPAddress, stats.Port, cmdMsg);

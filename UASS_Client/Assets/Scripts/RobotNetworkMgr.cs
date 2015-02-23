@@ -56,12 +56,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 		client = new UdpClient(port);
 		while (SocketStable)
 		{
-			int ctr = 0;
-			Debug.Log("made it to 0-" + ctr);
-			ctr++;
-
-
-				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+			IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 			try
 			{
 				data = client.Receive(ref anyIP);
@@ -74,20 +69,14 @@ public class RobotNetworkMgr : MonoBehaviour {
 				
 			if(SocketStable)
 			{
-				Debug.Log("made it to 1-" + ctr);
-				ctr++;
 
 				//Debug.Log(anyIP.Address.ToString() + " " + anyIP.Port.ToString());
 				string msg = Encoding.UTF8.GetString(data);
-				Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
-				
-				Debug.Log("made it to 2-" + ctr);
-				ctr++;
+				//Debug.Log("Msg received from " + anyIP.Address.ToString() + " " + anyIP.Port.ToString() + ": " + msg);
 
 				// split message into position vector
-
 				string[] parsed = msg.Split(' ');
-				// 
+ 
 				switch(parsed[0])
 				{
 					// request to join
@@ -102,11 +91,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 						}
 					}*/
 					if(existsFlag == false)
-					{
-						Debug.Log("made it to 3-" + ctr);
-						ctr++;
-
-						
+					{						
 						// make new unit for this IP address
 						Debug.Log("Creating new unit");
 						newU = new newRobotInfo();
@@ -125,22 +110,11 @@ public class RobotNetworkMgr : MonoBehaviour {
 
 						yield return Ninja.JumpBack;
 
-						Debug.Log("made it to 4-" + ctr);
-						ctr++;
-
-						Thread.Sleep(500);
-						Debug.Log("made it to 5-" + ctr);
-						ctr++;
-
-
 						// send message to ROS node 
 						IPEndPoint sendDest = new IPEndPoint(anyIP.Address, 8051);
 						Byte[] sendMsg = Encoding.ASCII.GetBytes("1 " + newUnitsID);
 						client.Send(sendMsg, sendMsg.Length, sendDest);
 						Debug.Log("Send message to " + anyIP.Address.ToString() + ": 1 " + newUnitsID); 
-
-						Debug.Log("made it to 6-" + ctr);
-						ctr++;
 					}
 					else
 					{
@@ -158,7 +132,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 
 					if(test != null)
 					{
-						Debug.Log("Found unit");
 						test.transform.position = new Vector3(float.Parse(parsed[2]), float.Parse(parsed[3]), float.Parse(parsed[4]));
 						test.transform.rotation = Quaternion.Euler(-pitch, yaw, -roll);
 					}
@@ -169,16 +142,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 					break;
 					
 				}
-				/*if(parsed.Length >= 14)
-				{
-					x = (float)Convert.ToDouble(parsed[1]);
-					y = (float)Convert.ToDouble(parsed[3]);
-					z = (float)Convert.ToDouble(parsed[5]);
-					roll = (float)Convert.ToDouble(parsed[7]);
-					pitch = (float)Convert.ToDouble(parsed[9]);
-					yaw = (float)Convert.ToDouble(parsed[11]);
-				}*/
-				ctr = 0;
 			}
 		}
 	}
