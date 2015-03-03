@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using UnityEngine.UI; 
+
 
 public class NetworkMgr : MonoBehaviour {
 //First section deals with hosting/joining rooms.
@@ -15,23 +17,20 @@ public class NetworkMgr : MonoBehaviour {
 	//private string OperatingSystem = "N/A";
 	private string path;
 	private Process ServerProcess = null;
-	private HostData[] hostList;
+	public HostData[] hostList;
+	private string portString = "";
 
-	private string UserIpAddress;
-	private int UserPort = 23467;
+	public string UserIpAddress;
+	public int UserPort = 23467;
 
-	private void StartUnityServer()
+	public void StartUnityServer()
 	{
 		Network.InitializeServer(8, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
 		MasterServer.updateRate = 2;
-
-		//GameObject temp = (GameObject)Network.Instantiate(tempFab, new Vector3(0, 0, 0), Quaternion.identity, 0);
-		//GameObject temp2 = (GameObject)Network.Instantiate(tempFab, new Vector3(5, 0, 5), Quaternion.identity, 0);
-
 	}
 
-	private void StartUserServer()
+	public void StartUserServer()
 	{
 		MasterServer.ipAddress = "127.0.0.1";
 		MasterServer.port = 23467;
@@ -50,50 +49,8 @@ public class NetworkMgr : MonoBehaviour {
 		Network.InitializeServer(8, 25001, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName,"UserGame");
 	}
-
-
-	private string portString = "";
-	void OnGUI()
-	{
-		GUI.TextField(new Rect(0, 0, 200, 25), MasterServer.ipAddress + "  " + MasterServer.port);
-
-
-
-
-		if (!Network.isClient && !Network.isServer)
-		{
-			if (GUI.Button(new Rect(100, 100, 200, 50), "Start Unity Server"))
-				StartUnityServer();
-			if (GUI.Button(new Rect(100, 150, 200, 50), "Start User Server"))
-				StartUserServer();
-			if (GUI.Button(new Rect(100, 200, 200, 50), "Refresh Hosts"))
-				RefreshHostList();
-			if (GUI.Button(new Rect(100, 250, 200, 50), "Refresh LANs"))
-				RefreshLANList();
-
-			//Allows user to enter in port of user host.
-			UserIpAddress = GUI.TextField(new Rect(100, 300, 120, 20), UserIpAddress);
-			
-			//Allows user to enter in port of user host.
-			portString= GUI.TextField(new Rect(230, 300, 60, 20), UserPort.ToString(), 6);
-			portString= Regex.Replace(portString, "[^0-9]", "");
-			UserPort = int.Parse(portString);
-
-
-			if (hostList != null)
-			{
-				for (int i = 0; i < hostList.Length; i++)
-				{
-					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName))
-						JoinServer(hostList[i]);
-				}
-			}
-		}
-	}
-
-
 	
-	private void RefreshHostList()
+	public void RefreshUnityList()
 	{	
 		Network.Disconnect ();
 		MasterServer.ipAddress = "67.225.180.24";
@@ -101,7 +58,7 @@ public class NetworkMgr : MonoBehaviour {
 		MasterServer.RequestHostList(typeName);
 	}
 
-	private void RefreshLANList()
+	public void RefreshUserList()
 	{
 		Network.Disconnect();
 		MasterServer.ipAddress = UserIpAddress;
@@ -115,7 +72,7 @@ public class NetworkMgr : MonoBehaviour {
 			hostList = MasterServer.PollHostList();
 	}
 
-	private void JoinServer(HostData hostData)
+	public void JoinServer(HostData hostData)
 	{
 		Network.Connect(hostData);
 	}
@@ -146,26 +103,6 @@ public class NetworkMgr : MonoBehaviour {
 	void Update () {
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

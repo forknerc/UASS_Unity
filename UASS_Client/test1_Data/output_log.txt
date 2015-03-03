@@ -12,85 +12,29 @@ Platform assembly: C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Dat
 Loading C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.097 seconds
-desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+- Completed reload, in  0.104 seconds
+desktop: 1440x900 60Hz; virtual: 1440x900 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 Platform assembly: C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\David\Desktop\UNITY\UASS_Unity\UASS_Client\test1_Data\Managed\System.dll (this message is harmless)
-made it to 0-0
+Untagged
  
 (Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
 
-made it to 1-1
+Untagged
  
 (Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
 
-Msg received from 127.0.0.1 59632: 0 1
+Untagged
  
 (Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
 
-made it to 2-2
+Untagged
  
 (Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
 
-made it to 3-3
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Creating new unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-made it to 4-4
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Owner ID: 351280773430216324 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-made it to 5-5
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Send message to 127.0.0.1: 1 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-made it to 6-6
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-made it to 0-0
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
- 
-(Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
-
-Unit
+client receive port closed
  
 (Filename: C:/buildslave/unity/build/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 56)
 
