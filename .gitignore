@@ -17,3 +17,6 @@
 sysinfo.txt
 *.csproj
 *.csproj
+*.csproj
+UASS_Client/test1_Data/output_log.txt
+UASS_Client/test1_Data/output_log.txt
