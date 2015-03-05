@@ -51,6 +51,8 @@
      <Compile Include="Assets\CielaSpike\Thread Ninja\Task.cs" />
      <Compile Include="Assets\CielaSpike\Thread Ninja\TaskState.cs" />
      <Compile Include="Assets\CielaSpike\Thread Ninja\ThreadNinjaMonoBehaviourExtensions.cs" />
+     <Compile Include="Assets\EnableScript.cs" />
+     <Compile Include="Assets\RoomScript.cs" />
      <Compile Include="Assets\Scripts\CommandMgr.cs" />
      <Compile Include="Assets\Scripts\InputMgr.cs" />
      <Compile Include="Assets\Scripts\NetworkMgr.cs" />
@@ -58,6 +60,7 @@
      <Compile Include="Assets\Scripts\SelectionMgr.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />
      <Compile Include="Assets\Scripts\UnitMgr.cs" />
+     <Compile Include="Assets\Scripts\WayPointMotion.cs" />
      <Compile Include="Assets\oldAssets\NetworkTest2 Stuff\networkMgr_old.cs" />
      <Compile Include="Assets\oldAssets\NetworkTest2 Stuff\player.cs" />
      <Compile Include="Assets\oldAssets\unitScripts\PioneerCommand.cs" />
