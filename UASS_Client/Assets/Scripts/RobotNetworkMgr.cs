@@ -41,9 +41,9 @@ public class RobotNetworkMgr : MonoBehaviour {
 
 	void OnDestroy()
 	{
+		this.StopAllCoroutines();
 		if(client != null)
 			client.Close ();
-		this.StopAllCoroutines();
 	}
 
 	// receive thread

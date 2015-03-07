@@ -1,16 +1,12 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using UnityEngine;
 using UnityEngine.UI; 
 
-
 public class NetworkMgr : MonoBehaviour {
-//First section deals with hosting/joining rooms.
-//Seconds section deals with accepting robot connection requests.
-	//public GameObject tempFab;
-
 	//Server Related Variables
 	private const string typeName = "UASS_Server";
 	private const string gameName = "ECSL_Lab";
@@ -20,12 +16,12 @@ public class NetworkMgr : MonoBehaviour {
 	public HostData[] hostList;
 	private string portString = "";
 
-	public string UserIpAddress;
+	public string UserIpAddress = "127.0.0.1";
 	public int UserPort = 23467;
-
+	
 	public void StartUnityServer()
 	{
-		Network.InitializeServer(8, 25000, !Network.HavePublicAddress());
+		Network.InitializeServer(8, 0, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
 		MasterServer.updateRate = 2;
 	}
@@ -46,29 +42,56 @@ public class NetworkMgr : MonoBehaviour {
 		ServerProcess.StartInfo.FileName = path;
 		ServerProcess.Start();		
 
-		Network.InitializeServer(8, 25001, !Network.HavePublicAddress());
+		Network.InitializeServer(8, 0, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName,"UserGame");
 	}
 	
 	public void RefreshUnityList()
 	{	
-		Network.Disconnect ();
-		MasterServer.ipAddress = "67.225.180.24";
-		MasterServer.port = 23466;
-		MasterServer.RequestHostList(typeName);
+		if(TestConnection("67.225.180.24"))
+		{
+			if(MasterServer.ipAddress != "67.225.180.24")
+			{
+				Network.Disconnect ();
+				MasterServer.ClearHostList();
+				MasterServer.ipAddress = "67.225.180.24";
+				MasterServer.port = 23466;
+			}
+			MasterServer.RequestHostList(typeName);
+		}
+		else
+		{
+			MasterServer.ClearHostList();
+			hostList = null;
+		}
 	}
 
 	public void RefreshUserList()
 	{
-		Network.Disconnect();
-		MasterServer.ipAddress = UserIpAddress;
-		MasterServer.port = UserPort;
-		MasterServer.RequestHostList(typeName);
-	}
+		if(TestConnection(UserIpAddress))
+		{
+			if(MasterServer.ipAddress != UserIpAddress)
+			{
+				Network.Disconnect ();
+				MasterServer.ClearHostList();
+				MasterServer.ipAddress = UserIpAddress;
+				MasterServer.port = UserPort;
+			}
+			MasterServer.RequestHostList(typeName);
+		}
+		else
+		{
+			MasterServer.ClearHostList();
+			hostList = null;
+		}
 
+
+	}
+	
 	void OnMasterServerEvent(MasterServerEvent msEvent)
 	{
-		if(msEvent == MasterServerEvent.HostListReceived)
+		UnityEngine.Debug.Log("MasterServerReached");
+		if (msEvent == MasterServerEvent.HostListReceived)
 			hostList = MasterServer.PollHostList();
 	}
 
@@ -80,6 +103,7 @@ public class NetworkMgr : MonoBehaviour {
 	void InitializeServerSettings()
 	{
 		UserIpAddress = Network.player.ipAddress;
+		UserPort = 23467;
 		hostList = new HostData[0];
 		Network.sendRate = 100;
 		path = Application.dataPath;
@@ -92,7 +116,9 @@ public class NetworkMgr : MonoBehaviour {
 	{
 		if(ServerProcess != null)
 			ServerProcess.Kill ();
+		Network.Disconnect();
 	}
+
 
 	// Use this for initialization
 	void Start () {	
@@ -101,7 +127,55 @@ public class NetworkMgr : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+			hostList = MasterServer.PollHostList();
+	}
+	
+	public HostData[] getHostList
+	{
+		get{return this.hostList;}
+		set{this.hostList = value;}
+	}
 
+
+	public bool TestConnection(string IP)
+	{
+		bool thereIsConnection = true;
+
+		float maxTime = 2.0F;
+		
+
+		Ping testPing = new Ping( IP );
+		
+		float timeTaken = 0.0F;
+		
+		while ( !testPing.isDone && thereIsConnection)
+		{
+
+			StartCoroutine(WaitXSeconds(timeTaken, 1));
+			
+			if ( timeTaken > maxTime )
+			{
+				// if time has exceeded the max
+				// time, break out and return false
+				thereIsConnection = false;
+			}
+			
+		}
+		if(testPing.time == 0)
+			thereIsConnection = false;
+		else if ( timeTaken <= maxTime) 
+			thereIsConnection = true;
+		UnityEngine.Debug.Log (timeTaken.ToString());
+		return thereIsConnection;
+	}
+	
+
+	IEnumerator WaitXSeconds(float timeTaken, int x)
+	{
+
+		yield return new WaitForSeconds(x);
+		timeTaken += x;
+	
 	}
 
 

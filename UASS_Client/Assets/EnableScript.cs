@@ -10,7 +10,6 @@ public class EnableScript : MonoBehaviour {
 	public string IpAddress;
 	public int Port;
 	public InputField IpInputField, PortInputField;
-	private HostData[] hostList;
 
 	
 	public void IPTextChange()
@@ -34,13 +33,13 @@ public class EnableScript : MonoBehaviour {
 		
 		if (!Network.isClient && !Network.isServer)
 		{
-			if (networkMgr.hostList != null)
+			if (networkMgr.getHostList != null)
 			{
-				for (int i = 0; i < networkMgr.hostList.Length; i++)
+				for (int i = 0; i < networkMgr.getHostList.Length; i++)
 				{
-					if (GUI.Button(new Rect(280, 60 + (60 * i), 110, 30), networkMgr.hostList[i].gameName))
+					if (GUI.Button(new Rect(280, 60 + (60 * i), 110, 30), networkMgr.getHostList[i].gameName))
 					{
-						networkMgr.JoinServer(networkMgr.hostList[i]);
+						networkMgr.JoinServer(networkMgr.getHostList[i]);
 						gameObject.SetActive(false);
 					}
 				}
@@ -56,7 +55,6 @@ public class EnableScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		networkMgr = NetworkObj.GetComponent<NetworkMgr>();
-		hostList = networkMgr.hostList;
 	}
 	
 	// Update is called once per frame
