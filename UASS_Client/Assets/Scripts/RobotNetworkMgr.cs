@@ -18,8 +18,7 @@ public class RobotNetworkMgr : MonoBehaviour {
 	private int port = 8053; // define > init
 	
 	// list of all units IP addresses
-	public List<IPAddress> unitIPs;
-	
+
 	private UnitMgr unitMgrScript;
 	
 	private string newUnitsID;
@@ -32,7 +31,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 	{
 		makeNewUnit = false;
 		tripWire = true;
-		unitIPs = new List<IPAddress>();
 		unitMgrScript = GetComponent<UnitMgr>();
 		//InitSocket();
 		this.StartCoroutineAsync(ReceiveData());
@@ -99,7 +97,20 @@ public class RobotNetworkMgr : MonoBehaviour {
 						newU.Position = new Vector3(0.0f,0.0f,0.0f);
 						newU.Orientation = new Vector3(0.0f,0.0f,0.0f);
 						newU.UnitType = Convert.ToInt32(parsed[1]);
-						newU.IPAddress = anyIP.Address.ToString();
+
+
+						if(anyIP.Address.ToString() == "127.0.0.1")
+						{
+							if (Dns.GetHostAddresses(Dns.GetHostName()).Length > 0)
+							{
+								newU.IPAddress = Dns.GetHostAddresses(Dns.GetHostName())[0].ToString();
+							}
+						}
+						else
+						{
+							newU.IPAddress = anyIP.Address.ToString();
+						}
+							
 						newU.Port = 8052;
 						newU.IsSelected = false;
 					
@@ -107,8 +118,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 						//make new unit
 						yield return Ninja.JumpToUnity;
 						newUnitsID = unitMgrScript.AddUnit(newU);
-
-
 						yield return Ninja.JumpBack;
 
 						// send message to ROS node 

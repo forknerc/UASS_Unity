@@ -6,8 +6,8 @@ public class InputMgr : MonoBehaviour {
 	Ray ray;
 	Vector3 point;
 	private Vector3 pos;
-	public SelectionMgr selectionMgr;
-	public CommandMgr commandMgr;
+	private SelectionMgr selectionMgr;
+	private CommandMgr commandMgr;
 
 	// Use this for initialization
 	void Start () {
@@ -53,6 +53,10 @@ public class InputMgr : MonoBehaviour {
 						else
 							selectionMgr.AddUnitToSelectedList(unit);
 					}
+				}
+				else if ( Input.GetKey(KeyCode.LeftControl) == false )
+				{
+					selectionMgr.RemoveAllUnits();
 				}
 				pos = hitL.point;
 			}

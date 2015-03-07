@@ -33,37 +33,20 @@ public class CommandMgr : MonoBehaviour {
 	{
 		return DesiredPos.x + " " + DesiredPos.y + " " + DesiredPos.z;
 	}
-
-
-	/*
-	public void SendGoToCommand(GameObject Unit, Vector3 DesiredPos, Vector3 DesiredOri)
-	{
-		Unit stats = (Unit)Unit.GetComponent("Unit");
-		string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosAndOriToString(DesiredPos, DesiredOri);
-		//Send to robot with stats.ipAddress and stats.port
-		Debug.Log ("Sending command: " + cmdMsg);
-		SendMessage (stats.IPAddress, stats.Port, cmdMsg);
-	}
-
-	public void SendGoToCommand(List<GameObject> Units, Vector3 DesiredPos, Vector3 DesiredOri)
-	{
-		foreach(GameObject unit in Units)
-		{
-			Unit stats = (Unit)unit.GetComponent("Unit");
-			string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosAndOriToString(DesiredPos, DesiredOri);
-			//Send to robot with stats.ipAddress and stats.port
-			Debug.Log ("Sending command: " + cmdMsg);
-			SendMessage (stats.IPAddress, stats.Port, cmdMsg);
-		}
-		
-	}
-	*/
 	
 	public void GoTo(List<GameObject> Units, Vector3 DesiredPos)
 	{
 		foreach(GameObject unit in Units)
 		{
-			Unit stats = (Unit)unit.GetComponent("Unit");
+			//If owner, proceed, else don't send command
+			if(unit.GetComponentInChildren<NetworkView>().isMine)
+			{
+				Debug.Log ("robot is mine!");
+
+			}
+
+
+			Unit stats = (Unit)unit.GetComponent<Unit>();
 			Vector3 newPos = new Vector3((float)Math.Round(DesiredPos.x, 2),  
 										 (float)Math.Round(DesiredPos.z, 2), 
 										 (float)Math.Round(unit.transform.position.y, 2));
@@ -78,6 +61,7 @@ public class CommandMgr : MonoBehaviour {
 
 	void SendMessage(string ipAddress, int port, string msg)
 	{
+		Debug.Log("Sending message to: "+ ipAddress + ": " + port);
 		byte[] data = Encoding.UTF8.GetBytes(msg);
 		IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
 		client.Send(data, data.Length, remoteEndPoint);
