@@ -88,10 +88,11 @@ namespace UASS.unitInfoStruct
 		public string id;
 		
 		public Vector3 Position;
+		public Vector3 PositionOffeset;
 		public Vector3 Orientation;
+		public Vector3 OrientationOffset;
 		public int UnitType;
 		public string Owner;
-		
 		public string IPAddress;
 		public int Port;
 		public bool IsSelected;

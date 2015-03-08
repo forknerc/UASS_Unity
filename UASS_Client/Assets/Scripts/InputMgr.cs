@@ -96,10 +96,6 @@ public class InputMgr : MonoBehaviour {
 				Debug.Log("no units selected to move");
 			}		
 		}
-
-
-
-
 	}
 
 	void OnGUI()
