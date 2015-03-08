@@ -5,7 +5,7 @@ public class CameraMotion : MonoBehaviour {
 
 	public float trasnlationSpeed;
 	public float zoomSpeed;
-	public float rotateSpeed;
+	public float rotateSpeed; // soon^tm
 
 	// Use this for initialization
 	void Start () {
@@ -19,16 +19,16 @@ public class CameraMotion : MonoBehaviour {
 
 		if((vert = Input.GetAxis("Vertical")) != 0)
 		{
-			transform.position += Vector3.forward * vert * trasnlationSpeed * Time.time;
+			transform.position += Vector3.forward * vert * trasnlationSpeed * Time.fixedTime;
 		}
 
 		if((horiz = Input.GetAxis("Horizontal")) != 0)
 		{
-			transform.position += Vector3.right * horiz * trasnlationSpeed * Time.time;
+			transform.position += Vector3.right * horiz * trasnlationSpeed * Time.fixedTime;
 		}
 		if((zoom = Input.GetAxis("Zoom")) != 0)
 		{
-			transform.position += transform.forward * zoom * zoomSpeed * Time.time;
+			transform.position += transform.forward * zoom * zoomSpeed * Time.fixedTime;
 		}
 	}
 }
