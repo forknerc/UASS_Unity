@@ -13,7 +13,6 @@ public class WayPointMotion : MonoBehaviour {
 	void Start () {
 	
 		offset = Mathf.PI * offsetNum / 4;
-
 	}
 	
 	// FixedUpdate is called once per physics call
