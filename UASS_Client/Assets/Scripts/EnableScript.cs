@@ -29,7 +29,7 @@ public class EnableScript : MonoBehaviour {
 
 	void OnGUI()
 	{
-		/*
+
 		GUI.TextField(new Rect(0, 0, 200, 25), MasterServer.ipAddress + "  " + MasterServer.port);
 		
 		if (!Network.isClient && !Network.isServer)
@@ -46,7 +46,7 @@ public class EnableScript : MonoBehaviour {
 				}
 			}
 		}
-		*/
+
 	}
 
 	public void DisableStartMenu()
