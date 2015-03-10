@@ -62,7 +62,7 @@ public class CommandMgr : MonoBehaviour {
 	}
 
 
-	public void SetOffset(GameObject unit, Vector3 PosOffset, float yawOffset)
+	public void SetOffset(GameObject unit, Vector3 PosOffset, float YawOffset)
 	{
 		//If owner, proceed, else don't send command
 		if(unit.GetComponentInChildren<NetworkView>().isMine)
@@ -72,9 +72,9 @@ public class CommandMgr : MonoBehaviour {
 			Unit stats = (Unit)unit.GetComponent<Unit>();
 			Vector3 newPos = new Vector3((float)Math.Round(PosOffset.x, 2),  
 			                             (float)Math.Round(PosOffset.y, 2), 
-			                             (float)Math.Round(unit.transform.position.z, 2));
+			                             (float)Math.Round(PosOffset.z, 2));
 
-			string cmdMsg = 2 + " " + stats.ID + " " + 4 + " " + PosToString(newPos) + " " + (Math.Round(unit.transform.rotation.y, 2)).ToString();
+			string cmdMsg = 2 + " " + stats.ID + " " + 4 + " " + PosToString(newPos) + " " + YawOffset.ToString();
 			//Send to robot with stats.ipAddress and stats.port
 			Debug.Log ("Sending command: " + cmdMsg);
 			SendMessage (stats.IPAddress, stats.Port, cmdMsg);

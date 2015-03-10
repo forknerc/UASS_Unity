@@ -5,12 +5,12 @@ using System.Text.RegularExpressions;
 
 public class EnableScript : MonoBehaviour {
 	public GameObject NetworkObj;
-	public NetworkMgr networkMgr;
+	private NetworkMgr networkMgr;
 
 	public string IpAddress;
 	public int Port;
 	public InputField IpInputField, PortInputField;
-
+	public GameObject MainInterface;
 	
 	public void IPTextChange()
 	{
@@ -29,6 +29,7 @@ public class EnableScript : MonoBehaviour {
 
 	void OnGUI()
 	{
+		/*
 		GUI.TextField(new Rect(0, 0, 200, 25), MasterServer.ipAddress + "  " + MasterServer.port);
 		
 		if (!Network.isClient && !Network.isServer)
@@ -45,6 +46,7 @@ public class EnableScript : MonoBehaviour {
 				}
 			}
 		}
+		*/
 	}
 
 	public void DisableStartMenu()
@@ -55,10 +57,19 @@ public class EnableScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		networkMgr = NetworkObj.GetComponent<NetworkMgr>();
+
 	}
-	
+
+
+	void OnDisable()
+	{
+		MainInterface.SetActive(true);
+	}
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
+
+
 }

@@ -8,6 +8,19 @@ public class InputMgr : MonoBehaviour {
 	private Vector3 pos;
 	private SelectionMgr selectionMgr;
 	private CommandMgr commandMgr;
+	public bool MenuActive;
+
+
+	public Vector3 RayCastPoint
+	{
+		get
+		{
+			if(pos == null)
+				return new Vector3(0,0,0);
+			return pos;
+		}
+	}
+
 
 	// Use this for initialization
 	void Start () {
@@ -35,7 +48,7 @@ public class InputMgr : MonoBehaviour {
 			// if the ray hits something
 			if(Physics.Raycast(rayL,out hitL,Mathf.Infinity))
 			{
-				Debug.Log(hitL.transform.gameObject.tag);
+				Debug.Log(hitL.collider.tag);
 
 				if(hitL.collider.tag == "Unit")
 				{
@@ -54,14 +67,13 @@ public class InputMgr : MonoBehaviour {
 							selectionMgr.AddUnitToSelectedList(unit);
 					}
 				}
-				else if ( Input.GetKey(KeyCode.LeftControl) == false )
+				else if(Input.GetKey(KeyCode.LeftControl) == false && MenuActive == false)
 				{
 					selectionMgr.RemoveAllUnits();
 				}
 				pos = hitL.point;
 			}
-			else if ( Input.GetKey(KeyCode.LeftControl) == false )
-				selectionMgr.RemoveAllUnits();
+
 
 		}
 		
@@ -98,9 +110,12 @@ public class InputMgr : MonoBehaviour {
 		}
 	}
 
-	void OnGUI()
-	{	
-		GUI.TextField(new Rect(200, 000, 200, 25), pos.ToString());
+
+
+	public void SetMenuActive(bool val)
+	{
+		MenuActive = val;
 	}
+
 
 }
