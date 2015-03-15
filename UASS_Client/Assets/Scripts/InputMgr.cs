@@ -52,8 +52,9 @@ public class InputMgr : MonoBehaviour {
 			//EventSystem eventsystem;
 
 			GameObject test = UnityEngine.EventSystems.EventSystem.current.firstSelectedGameObject;
-			Debug.Log(UnityEngine.EventSystems.EventSystem.current);
-				//Debug.Log (test.tag.ToString());
+			//	Debug.Log(UnityEngine.EventSystems.EventSystem.current);
+			Debug.Log (IsPointerOverUIObject());
+			//Debug.Log (test.tag.ToString());
 
 			// raycast that point
 			Ray rayL;
@@ -141,6 +142,7 @@ public class InputMgr : MonoBehaviour {
 		
 		List<RaycastResult> results = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
 		return results.Count > 0;
 	}
 	

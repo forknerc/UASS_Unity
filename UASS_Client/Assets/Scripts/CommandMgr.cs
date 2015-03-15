@@ -62,7 +62,7 @@ public class CommandMgr : MonoBehaviour {
 	}
 
 
-	public void SetOffset(GameObject unit, Vector3 PosOffset, float YawOffset)
+	public void SendDesiredPosition(GameObject unit, Vector3 PosOffset, float YawOffset)
 	{
 		//If owner, proceed, else don't send command
 		if(unit.GetComponentInChildren<NetworkView>().isMine)
