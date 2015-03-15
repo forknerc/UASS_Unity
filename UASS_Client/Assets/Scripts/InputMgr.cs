@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class InputMgr : MonoBehaviour {
 	public float distance = 5.0f;
@@ -30,6 +32,10 @@ public class InputMgr : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
+
 		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		point = ray.origin + (ray.direction * distance);
 		RaycastHit hit = new RaycastHit();
@@ -38,8 +44,17 @@ public class InputMgr : MonoBehaviour {
 			pos=hit.point;
 		}
 
+
+
 		if(Input.GetMouseButtonDown(0))
 		{
+			//Debug.Log(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1).ToString());
+			//EventSystem eventsystem;
+
+			GameObject test = UnityEngine.EventSystems.EventSystem.current.firstSelectedGameObject;
+			Debug.Log(UnityEngine.EventSystems.EventSystem.current);
+				//Debug.Log (test.tag.ToString());
+
 			// raycast that point
 			Ray rayL;
 			RaycastHit hitL;
@@ -72,6 +87,10 @@ public class InputMgr : MonoBehaviour {
 					selectionMgr.RemoveAllUnits();
 				}
 				pos = hitL.point;
+
+
+
+
 			}
 
 
@@ -110,8 +129,21 @@ public class InputMgr : MonoBehaviour {
 		}
 	}
 
-
-
+	/// <summary>
+	/// Cast a ray to test if Input.mousePosition is over any UI object in EventSystem.current. This is a replacement
+	/// for IsPointerOverGameObject() which does not work on Android in 4.6.0f3
+	/// </summary>
+	private bool IsPointerOverUIObject() {
+		// Referencing this code for GraphicRaycaster https://gist.github.com/stramit/ead7ca1f432f3c0f181f
+		// the ray cast appears to require only eventData.position.
+		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+		return results.Count > 0;
+	}
+	
 	public void SetMenuActive(bool val)
 	{
 		MenuActive = val;
