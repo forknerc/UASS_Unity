@@ -28,6 +28,7 @@ public class UpdatePositionScript : MonoBehaviour {
 		{
 			GameObject unit = selectionMgr.selectedUnits[0];
 			CurrentPosition = new Vector3((float)Math.Round(unit.transform.position.x, 2), (float)Math.Round(unit.transform.position.y, 2), (float)Math.Round(unit.transform.position.z, 2));
+			CurrentYaw = Math.Round(unit.transform.rotation.y, 2);
 
 			Current_X.text = CurrentPosition.x.ToString();
 			Current_Y.text = CurrentPosition.y.ToString();
@@ -65,7 +66,7 @@ public class UpdatePositionScript : MonoBehaviour {
 		DesiredPosition = new Vector3(float.Parse(Actual_X.text), float.Parse(Actual_Y.text), float.Parse(Actual_Z.text));
 		DesiredYaw = float.Parse (Actual_Yaw.text);
 
-		Vector3 PositionOffset = DesiredPosition - CurrentPosition; 
+		Vector3 PositionOffset = DesiredPosition - CurrentPosition;
 		float YawOffset = DesiredYaw - CurrentYaw;
 		if(selectionMgr.selectedUnits.Count > 0)
 			commandMgr.SetOffset(selectionMgr.selectedUnits[0], PositionOffset, YawOffset);
