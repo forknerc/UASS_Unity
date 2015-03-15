@@ -19,16 +19,16 @@ public class CameraMotion : MonoBehaviour {
 
 		if((vert = Input.GetAxis("Vertical")) != 0)
 		{
-			transform.position += Vector3.forward * vert * trasnlationSpeed * Time.fixedTime;
+			transform.position += Vector3.forward * vert * trasnlationSpeed * Time.deltaTime;
 		}
 
 		if((horiz = Input.GetAxis("Horizontal")) != 0)
 		{
-			transform.position += Vector3.right * horiz * trasnlationSpeed * Time.fixedTime;
+			transform.position += Vector3.right * horiz * trasnlationSpeed * Time.deltaTime;
 		}
 		if((zoom = Input.GetAxis("Zoom")) != 0)
 		{
-			transform.position += transform.forward * zoom * zoomSpeed * Time.fixedTime;
+			transform.position += transform.forward * zoom * zoomSpeed * Time.deltaTime;
 		}
 	}
 }
