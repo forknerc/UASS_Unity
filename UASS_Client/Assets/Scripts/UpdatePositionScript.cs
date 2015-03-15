@@ -32,8 +32,7 @@ public class UpdatePositionScript : MonoBehaviour {
 			Current_X.text = CurrentPosition.x.ToString();
 			Current_Y.text = CurrentPosition.y.ToString();
 			Current_Z.text = CurrentPosition.z.ToString();
-			Current_Yaw.text = (float)Math.Asin(2*rotation.x*rotation.y + 2*rotation.z * rotation.w, 2);
-			//Current_Yaw.text = Math.Round(unit.transform.rotation.eulerAngles.y, 5).ToString();
+			Current_Yaw.text = Math.Round(unit.transform.rotation.eulerAngles.y, 2).ToString();
 		}
 		else
 		{
