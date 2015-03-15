@@ -28,11 +28,12 @@ public class UpdatePositionScript : MonoBehaviour {
 		{
 			GameObject unit = selectionMgr.selectedUnits[0];
 			CurrentPosition = new Vector3((float)Math.Round(unit.transform.position.x, 2), (float)Math.Round(unit.transform.position.y, 2), (float)Math.Round(unit.transform.position.z, 2));
-
+			Quaternion rotation = unit.transform.rotation;
 			Current_X.text = CurrentPosition.x.ToString();
 			Current_Y.text = CurrentPosition.y.ToString();
 			Current_Z.text = CurrentPosition.z.ToString();
-			Current_Yaw.text = Math.Round(unit.transform.rotation.y, 2).ToString();
+			Current_Yaw.text = (float)Math.Asin(2*rotation.x*rotation.y + 2*rotation.z * rotation.w, 2);
+			//Current_Yaw.text = Math.Round(unit.transform.rotation.eulerAngles.y, 5).ToString();
 		}
 		else
 		{
