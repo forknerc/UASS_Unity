@@ -65,8 +65,8 @@ public class UpdatePositionScript : MonoBehaviour {
 		DesiredPosition = new Vector3(float.Parse(Actual_X.text), float.Parse(Actual_Y.text), float.Parse(Actual_Z.text));
 		DesiredYaw = float.Parse (Actual_Yaw.text);
 
-		Vector3 PositionOffset = CurrentPosition - DesiredPosition;
-		float YawOffset = CurrentYaw - DesiredYaw;
+		Vector3 PositionOffset = DesiredPosition - CurrentPosition; 
+		float YawOffset = DesiredYaw - CurrentYaw;
 		if(selectionMgr.selectedUnits.Count > 0)
 			commandMgr.SetOffset(selectionMgr.selectedUnits[0], PositionOffset, YawOffset);
 	}
