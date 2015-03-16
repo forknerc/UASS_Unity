@@ -31,102 +31,97 @@ public class InputMgr : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-
-
-
-		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		point = ray.origin + (ray.direction * distance);
-		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast (ray, out hit)) {
-			// Create a particle if hit
-			pos=hit.point;
-		}
-
-
-
-		if(Input.GetMouseButtonDown(0))
+	void Update () 
+	{
+		if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
 		{
-			//Debug.Log(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1).ToString());
-			//EventSystem eventsystem;
-
-			GameObject test = UnityEngine.EventSystems.EventSystem.current.firstSelectedGameObject;
-			//	Debug.Log(UnityEngine.EventSystems.EventSystem.current);
-			Debug.Log (IsPointerOverUIObject());
-			//Debug.Log (test.tag.ToString());
-
-			// raycast that point
-			Ray rayL;
-			RaycastHit hitL;
-			rayL = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//User is interacting with GUI, not the world. 
+		}
+		else
+		{
+			ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			point = ray.origin + (ray.direction * distance);
+			RaycastHit hit = new RaycastHit();
+			if (Physics.Raycast (ray, out hit)) {
+				// Create a particle if hit
+				pos=hit.point;
+			}
 			
-			// if the ray hits something
-			if(Physics.Raycast(rayL,out hitL,Mathf.Infinity))
+			
+			if(Input.GetMouseButtonDown(0))
 			{
-				Debug.Log(hitL.collider.tag);
-
-				if(hitL.collider.tag == "Unit")
+				// raycast that point
+				Ray rayL;
+				RaycastHit hitL;
+				rayL = Camera.main.ScreenPointToRay(Input.mousePosition);
+				
+				// if the ray hits something
+				if(Physics.Raycast(rayL,out hitL,Mathf.Infinity))
 				{
-					GameObject unit = hitL.transform.gameObject;
-			
-					if ( Input.GetKey(KeyCode.LeftControl) == false )
+					//Debug.Log(hitL.collider.tag);
+					
+					if(hitL.collider.tag == "Unit")
+					{
+						GameObject unit = hitL.transform.gameObject;
+						
+						if ( Input.GetKey(KeyCode.LeftControl) == false )
+						{
+							selectionMgr.RemoveAllUnits();
+							selectionMgr.AddUnitToSelectedList(unit);
+						}
+						else
+						{
+							if(selectionMgr.selectedUnits.Contains(unit))
+								selectionMgr.RemoveUnitFromSelectedList(unit);
+							else
+								selectionMgr.AddUnitToSelectedList(unit);
+						}
+					}
+					else if(Input.GetKey(KeyCode.LeftControl) == false && MenuActive == false)
 					{
 						selectionMgr.RemoveAllUnits();
-						selectionMgr.AddUnitToSelectedList(unit);
 					}
-					else
-					{
-						if(selectionMgr.selectedUnits.Contains(unit))
-							selectionMgr.RemoveUnitFromSelectedList(unit);
-						else
-							selectionMgr.AddUnitToSelectedList(unit);
-					}
+					pos = hitL.point;
+					
+					
+					
+					
 				}
-				else if(Input.GetKey(KeyCode.LeftControl) == false && MenuActive == false)
-				{
-					selectionMgr.RemoveAllUnits();
-				}
-				pos = hitL.point;
-
-
-
-
-			}
-
-
-		}
-		
-		// right click
-		if(Input.GetMouseButtonDown(1))
-		{
-			// create raycast from mouse point
-			Ray rayR;
-			RaycastHit hitR;
-			rayR = Camera.main.ScreenPointToRay(Input.mousePosition);
-			Physics.Raycast(rayR,out hitR,Mathf.Infinity);
-			
-			// if a unit is selected
-			if(selectionMgr.selectedUnits.Count>0)
-			{
-				// find target position
-				pos = hitR.point;
 				
-				// if in designated movement range
-				//if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
-				//{
-				commandMgr.GoTo(selectionMgr.selectedUnits, pos);
-				//}
-				//else 
-				//{
-					// click out of movement range
-				//	Debug.Log("move out of bounds");
-				//}
+				
 			}
-			else
+			
+			// right click
+			if(Input.GetMouseButtonDown(1))
 			{
-				Debug.Log("no units selected to move");
-			}		
+				// create raycast from mouse point
+				Ray rayR;
+				RaycastHit hitR;
+				rayR = Camera.main.ScreenPointToRay(Input.mousePosition);
+				Physics.Raycast(rayR,out hitR,Mathf.Infinity);
+				
+				// if a unit is selected
+				if(selectionMgr.selectedUnits.Count>0)
+				{
+					// find target position
+					pos = hitR.point;
+					
+					// if in designated movement range
+					//if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
+					//{
+					commandMgr.GoTo(selectionMgr.selectedUnits, pos);
+					//}
+					//else 
+					//{
+					// click out of movement range
+					//	Debug.Log("move out of bounds");
+					//}
+				}
+				else
+				{
+					Debug.Log("no units selected to move");
+				}		
+			}
 		}
 	}
 
