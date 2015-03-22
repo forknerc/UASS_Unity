@@ -17,7 +17,7 @@ public class InputMgr : MonoBehaviour {
 	public float distance = 5.0f;
 	Ray ray;
 	Vector3 point;
-	private Vector3 pos;
+	public Vector3 pos;
 	private SelectionMgr selectionMgr;
 	private CommandMgr commandMgr;
 	public bool MenuActive;
