@@ -7,6 +7,7 @@ using UASS.unitInfoStruct;
 public class Unit : MonoBehaviour{ 
 	public GameObject SelectionCircle;
 
+
 	public string id;
 	public string ID
 	{
@@ -24,6 +25,10 @@ public class Unit : MonoBehaviour{
 	
 	public string IPAddress;
 	public int Port;
+
+	public bool IsAerial = false;
+	public bool OnGround = true;
+
 
 
 	public bool isSelected;

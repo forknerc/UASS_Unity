@@ -3,7 +3,17 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
+public class InputModes
+{
+	public const int RegularMode = 0;
+	public const int SetPositionMode = 1;
+	public const int MenuMode = 2;
+}
+
+
+
 public class InputMgr : MonoBehaviour {
+	public int InputMode = 0;
 	public float distance = 5.0f;
 	Ray ray;
 	Vector3 point;
@@ -11,6 +21,13 @@ public class InputMgr : MonoBehaviour {
 	private SelectionMgr selectionMgr;
 	private CommandMgr commandMgr;
 	public bool MenuActive;
+
+	public GameObject UpdatePositionPanel;
+	public GameObject MenuPanel;
+
+	public KeyCode LaunchShortcut;
+	public KeyCode LandShortcut;
+
 
 
 	public Vector3 RayCastPoint
@@ -23,46 +40,109 @@ public class InputMgr : MonoBehaviour {
 		}
 	}
 
-
 	// Use this for initialization
 	void Start () {
 		selectionMgr = GetComponent<SelectionMgr>();
 		commandMgr = GetComponent<CommandMgr>();
+
+		LaunchShortcut = KeyCode.G;
+		LandShortcut = KeyCode.H;
+
 	}
-	
+
+	void CheckMode()
+	{
+		if(UpdatePositionPanel.activeSelf)
+		{
+			InputMode = InputModes.SetPositionMode;
+		}
+		else if(MenuPanel.activeSelf)
+		{
+			InputMode = InputModes.MenuMode;
+		}
+		else
+		{
+			InputMode = InputModes.RegularMode;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () 
+	{
+		//Check game to see which input mode we should be in (Regular, UpdatePosition, etc.)
+		CheckMode();
+		switch(InputMode)
+		{
+		case InputModes.MenuMode:
+			break;
+		case InputModes.SetPositionMode:
+			SetPositionModeUpdate();
+			break;
+		case InputModes.RegularMode:
+			RegularModeUpdate();
+			break;
+		default:
+			break;
+		}
+	}
+
+	void SetPositionModeUpdate()
+	{
+		//Create a raycast.
+		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		point = ray.origin + (ray.direction * distance);
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast (ray, out hit)) {
+			// Create a particle if hit
+			pos=hit.point;
+		}
+
+		if(Input.GetMouseButtonDown(0))
+		{
+			// if the ray hits something
+			if(Physics.Raycast(ray,out hit,Mathf.Infinity))
+			{
+				if(hit.collider.tag == "Unit")
+				{
+					GameObject unit = hit.transform.gameObject;
+					selectionMgr.RemoveAllUnits();
+					selectionMgr.AddUnitToSelectedList(unit);
+				}
+			}	
+		}
+	}
+
+	void RegularModeUpdate()
 	{
 		if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
 		{
 			//User is interacting with GUI, not the world. 
+			//Don't create a raycast
 		}
 		else
 		{
-			ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			point = ray.origin + (ray.direction * distance);
-			RaycastHit hit = new RaycastHit();
-			if (Physics.Raycast (ray, out hit)) {
-				// Create a particle if hit
-				pos=hit.point;
-			}
-			
-			
+			//Check Keypresses
+			CheckKeyPresses();
+
 			if(Input.GetMouseButtonDown(0))
 			{
-				// raycast that point
-				Ray rayL;
-				RaycastHit hitL;
-				rayL = Camera.main.ScreenPointToRay(Input.mousePosition);
-				
+				//Create a raycast.
+				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				point = ray.origin + (ray.direction * distance);
+				RaycastHit hit = new RaycastHit();
+				if (Physics.Raycast (ray, out hit)) {
+					// Create a particle if hit
+					pos=hit.point;
+				}
+
 				// if the ray hits something
-				if(Physics.Raycast(rayL,out hitL,Mathf.Infinity))
+				if(Physics.Raycast(ray,out hit,Mathf.Infinity))
 				{
 					//Debug.Log(hitL.collider.tag);
 					
-					if(hitL.collider.tag == "Unit")
+					if(hit.collider.tag == "Unit")
 					{
-						GameObject unit = hitL.transform.gameObject;
+						GameObject unit = hit.transform.gameObject;
 						
 						if ( Input.GetKey(KeyCode.LeftControl) == false )
 						{
@@ -77,45 +157,36 @@ public class InputMgr : MonoBehaviour {
 								selectionMgr.AddUnitToSelectedList(unit);
 						}
 					}
-					else if(Input.GetKey(KeyCode.LeftControl) == false && MenuActive == false)
+					else if(Input.GetKey(KeyCode.LeftControl))
 					{
 						selectionMgr.RemoveAllUnits();
 					}
-					pos = hitL.point;
-					
-					
-					
-					
-				}
-				
-				
+					else
+					{
+						selectionMgr.RemoveAllUnits();
+					}
+					pos = hit.point;
+				}	
 			}
 			
 			// right click
 			if(Input.GetMouseButtonDown(1))
-			{
-				// create raycast from mouse point
-				Ray rayR;
-				RaycastHit hitR;
-				rayR = Camera.main.ScreenPointToRay(Input.mousePosition);
-				Physics.Raycast(rayR,out hitR,Mathf.Infinity);
-				
+			{	
+				//Create a raycast.
+				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				point = ray.origin + (ray.direction * distance);
+				RaycastHit hit = new RaycastHit();
+				if (Physics.Raycast (ray, out hit)) {
+					// Create a particle if hit
+					pos=hit.point;
+				}
+
 				// if a unit is selected
 				if(selectionMgr.selectedUnits.Count>0)
 				{
 					// find target position
-					pos = hitR.point;
-					
-					// if in designated movement range
-					//if(pos.x < 1.8 && pos.x > -1.8 && pos.z < 1.0 && pos.z > -1.0)
-					//{
+					pos = hit.point;
 					commandMgr.GoTo(selectionMgr.selectedUnits, pos);
-					//}
-					//else 
-					//{
-					// click out of movement range
-					//	Debug.Log("move out of bounds");
-					//}
 				}
 				else
 				{
@@ -125,26 +196,21 @@ public class InputMgr : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// Cast a ray to test if Input.mousePosition is over any UI object in EventSystem.current. This is a replacement
-	/// for IsPointerOverGameObject() which does not work on Android in 4.6.0f3
-	/// </summary>
-	private bool IsPointerOverUIObject() {
-		// Referencing this code for GraphicRaycaster https://gist.github.com/stramit/ead7ca1f432f3c0f181f
-		// the ray cast appears to require only eventData.position.
-		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-		
-		List<RaycastResult> results = new List<RaycastResult>();
-		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 
-		return results.Count > 0;
-	}
-	
-	public void SetMenuActive(bool val)
+	public void CheckKeyPresses()
 	{
-		MenuActive = val;
+		if(Input.anyKeyDown)
+		{
+			Debug.Log (Input.inputString);
+		}
+		if (Input.GetKeyDown(LaunchShortcut))
+		{
+			commandMgr.Launch(selectionMgr.selectedUnits);
+		}
+		else if(Input.GetKeyDown(LandShortcut))
+		{
+			commandMgr.Land(selectionMgr.selectedUnits);
+		}
+
 	}
-
-
 }

@@ -5,7 +5,6 @@ public class UIController : MonoBehaviour {
 	
 	public GameObject pauseMenu;
 	public GameObject Manager;
-	private InputMgr inputMgr;
 	public KeyCode toggleKey = KeyCode.BackQuote;
 
 	public GameObject[] List; 
@@ -25,14 +24,10 @@ public class UIController : MonoBehaviour {
 			if(temp == false)
 				pauseMenu.SetActive(!pauseMenu.activeSelf);
 		}
-		if(pauseMenu.activeSelf)
-			temp = true;
-		inputMgr.SetMenuActive(temp);
 	}
 
 	void Start()
 	{
-		inputMgr = Manager.GetComponent<InputMgr>();
 	}
 	
 }

@@ -16,6 +16,10 @@ public class NetworkMgr : MonoBehaviour {
 	public HostData[] hostList;
 	private string portString = "";
 
+
+	private string UnityMSAddress = "67.225.180.24";
+	private int UnityMSPort;
+
 	public string UserIpAddress = "127.0.0.1";
 	public int UserPort = 23467;
 	
@@ -48,14 +52,14 @@ public class NetworkMgr : MonoBehaviour {
 	
 	public void RefreshUnityList()
 	{	
-		if(TestConnection("67.225.180.24"))
+		if(TestConnection(UnityMSAddress))
 		{
-			if(MasterServer.ipAddress != "67.225.180.24")
+			if(MasterServer.ipAddress != UnityMSAddress)
 			{
 				Network.Disconnect ();
 				MasterServer.ClearHostList();
-				MasterServer.ipAddress = "67.225.180.24";
-				MasterServer.port = 23466;
+				MasterServer.ipAddress = UnityMSAddress;
+				MasterServer.port = UnityMSPort;
 			}
 			MasterServer.RequestHostList(typeName);
 		}
