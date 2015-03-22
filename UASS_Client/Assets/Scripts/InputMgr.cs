@@ -16,8 +16,7 @@ public class InputMgr : MonoBehaviour {
 	public int InputMode = 0;
 	public float distance = 5.0f;
 	Ray ray;
-	Vector3 point;
-	public Vector3 pos;
+	private Vector3 pos;
 	private SelectionMgr selectionMgr;
 	private CommandMgr commandMgr;
 	public bool MenuActive;
@@ -34,8 +33,6 @@ public class InputMgr : MonoBehaviour {
 	{
 		get
 		{
-			if(pos == null)
-				return new Vector3(0,0,0);
 			return pos;
 		}
 	}
@@ -90,7 +87,6 @@ public class InputMgr : MonoBehaviour {
 	{
 		//Create a raycast.
 		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		point = ray.origin + (ray.direction * distance);
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast (ray, out hit)) {
 			// Create a particle if hit
@@ -128,7 +124,6 @@ public class InputMgr : MonoBehaviour {
 			{
 				//Create a raycast.
 				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				point = ray.origin + (ray.direction * distance);
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast (ray, out hit)) {
 					// Create a particle if hit
@@ -174,7 +169,6 @@ public class InputMgr : MonoBehaviour {
 			{	
 				//Create a raycast.
 				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				point = ray.origin + (ray.direction * distance);
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast (ray, out hit)) {
 					// Create a particle if hit

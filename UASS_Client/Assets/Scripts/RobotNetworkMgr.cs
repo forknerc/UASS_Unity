@@ -16,21 +16,14 @@ public class RobotNetworkMgr : MonoBehaviour {
 	
 	// receive port
 	private int port = 8053; // define > init
-	
-	// list of all units IP addresses
-
 	private UnitMgr unitMgrScript;
 	
 	private string newUnitsID;
 	private newRobotInfo newU;
-	private bool makeNewUnit;
-	private bool tripWire;
-	
+
 	// Use this for initialization
 	void Start () 
 	{
-		makeNewUnit = false;
-		tripWire = true;
 		unitMgrScript = GetComponent<UnitMgr>();
 		//InitSocket();
 		this.StartCoroutineAsync(ReceiveData());

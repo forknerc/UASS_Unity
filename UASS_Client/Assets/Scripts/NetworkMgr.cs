@@ -14,7 +14,6 @@ public class NetworkMgr : MonoBehaviour {
 	private string path;
 	private Process ServerProcess = null;
 	public HostData[] hostList;
-	private string portString = "";
 
 
 	private string UnityMSAddress = "67.225.180.24";

@@ -19,7 +19,6 @@ public class UpdatePosition : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		point = ray.origin + (ray.direction * distance);
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast (ray, out hit)) {
 			// Create a particle if hit
