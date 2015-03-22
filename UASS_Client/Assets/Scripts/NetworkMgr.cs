@@ -18,7 +18,7 @@ public class NetworkMgr : MonoBehaviour {
 
 
 	private string UnityMSAddress = "67.225.180.24";
-	private int UnityMSPort;
+	private int UnityMSPort = 23466;
 
 	public string UserIpAddress = "127.0.0.1";
 	public int UserPort = 23467;

@@ -94,9 +94,8 @@ public class CommandMgr : MonoBehaviour {
 			Unit stats = (Unit)unit.GetComponent<Unit>();
 
 			//If owner, proceed, else don't send command
-			if(unit.GetComponentInChildren<NetworkView>().isMine && stats.IsAerial && stats.OnGround)
+			if(unit.GetComponentInChildren<NetworkView>().isMine && stats.IsAerial)
 			{
-				stats.OnGround = false;
 				string cmdMsg = 2 + " " + stats.ID + " " + 2;
 				//Send to robot with stats.ipAddress and stats.port
 				Debug.Log ("Sending command: " + cmdMsg);
@@ -113,9 +112,8 @@ public class CommandMgr : MonoBehaviour {
 			Unit stats = (Unit)unit.GetComponent<Unit>();
 			
 			//If owner, proceed, else don't send command
-			if(unit.GetComponentInChildren<NetworkView>().isMine && stats.IsAerial && !stats.OnGround)
+			if(unit.GetComponentInChildren<NetworkView>().isMine && stats.IsAerial)
 			{
-				stats.OnGround = true;
 				string cmdMsg = 2 + " " + stats.ID + " " + 3;
 				//Send to robot with stats.ipAddress and stats.port
 				Debug.Log ("Sending command: " + cmdMsg);

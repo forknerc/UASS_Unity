@@ -27,9 +27,6 @@ public class Unit : MonoBehaviour{
 	public int Port;
 
 	public bool IsAerial = false;
-	public bool OnGround = true;
-
-
 
 	public bool isSelected;
 	public bool IsSelected
