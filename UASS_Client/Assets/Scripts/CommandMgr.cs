@@ -45,8 +45,8 @@ public class CommandMgr : MonoBehaviour {
 
 				Unit stats = (Unit)unit.GetComponent<Unit>();
 				Vector3 newPos = new Vector3((float)Math.Round(DesiredPos.x, 2),  
-				                             (float)Math.Round(DesiredPos.y, 2), 
-				                             (float)Math.Round(unit.transform.position.z, 2));
+				                             (float)Math.Round(unit.transform.position.y, 2), 
+				                             (float)Math.Round(DesiredPos.z, 2));
 				string cmdMsg = 2 + " " + stats.ID + " " + 0 + " " + PosToString(newPos);
 				//Send to robot with stats.ipAddress and stats.port
 				Debug.Log ("Sending command: " + cmdMsg);
