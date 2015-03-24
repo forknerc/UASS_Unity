@@ -120,9 +120,41 @@ public class CommandMgr : MonoBehaviour {
 				SendMessage (stats.IPAddress, stats.Port, cmdMsg);
 			}
 		}
-		
 	}
 
+	public void Stop(List<GameObject> Units)
+	{
+		foreach(GameObject unit in Units)
+		{
+			Unit stats = (Unit)unit.GetComponent<Unit>();
+			
+			//If owner, proceed, else don't send command
+			if(unit.GetComponentInChildren<NetworkView>().isMine)
+			{
+				string cmdMsg = 2 + " " + stats.ID + " " + 0;
+				//Send to robot with stats.ipAddress and stats.port
+				Debug.Log ("Sending command: " + cmdMsg);
+				SendMessage (stats.IPAddress, stats.Port, cmdMsg);
+			}
+		}
+	}
+
+	public void Move(List<GameObject> Units, int direction)
+	{
+		foreach(GameObject unit in Units)
+		{
+			Unit stats = (Unit)unit.GetComponent<Unit>();
+			
+			//If owner, proceed, else don't send command
+			if(unit.GetComponentInChildren<NetworkView>().isMine)
+			{
+				string cmdMsg = 2 + " " + stats.ID + " " + 5 + " " + direction;
+				//Send to robot with stats.ipAddress and stats.port
+				Debug.Log ("Sending command: " + cmdMsg);
+				SendMessage (stats.IPAddress, stats.Port, cmdMsg);
+			}
+		}
+	}
 
 	void SendMessage(string ipAddress, int port, string msg)
 	{

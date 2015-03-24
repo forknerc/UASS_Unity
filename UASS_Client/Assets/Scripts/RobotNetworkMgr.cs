@@ -17,7 +17,6 @@ public class RobotNetworkMgr : MonoBehaviour {
 	// receive port
 	private int port = 8053; // define > init
 	private UnitMgr unitMgrScript;
-	
 	private string newUnitsID;
 	private newRobotInfo newU;
 

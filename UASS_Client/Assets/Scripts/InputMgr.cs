@@ -11,7 +11,6 @@ public class InputModes
 }
 
 
-
 public class InputMgr : MonoBehaviour {
 	public int InputMode = 0;
 	public float distance = 5.0f;
@@ -26,6 +25,12 @@ public class InputMgr : MonoBehaviour {
 
 	public KeyCode LaunchShortcut;
 	public KeyCode LandShortcut;
+
+	//public KeyCode TurnLeft, TurnRight, MoveForward, MoveBackwards;
+	//Control of units using keys
+	public float vert;
+	public float hori;
+	public int Direction, PriorDirection;
 
 
 
@@ -110,6 +115,8 @@ public class InputMgr : MonoBehaviour {
 
 	void RegularModeUpdate()
 	{
+		vert = Input.GetAxis("VerticalR");
+		hori = Input.GetAxis("HorizontalR");
 		if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
 		{
 			//User is interacting with GUI, not the world. 
@@ -193,10 +200,6 @@ public class InputMgr : MonoBehaviour {
 
 	public void CheckKeyPresses()
 	{
-		if(Input.anyKeyDown)
-		{
-			Debug.Log (Input.inputString);
-		}
 		if (Input.GetKeyDown(LaunchShortcut))
 		{
 			commandMgr.Launch(selectionMgr.selectedUnits);
@@ -206,5 +209,44 @@ public class InputMgr : MonoBehaviour {
 			commandMgr.Land(selectionMgr.selectedUnits);
 		}
 
+		PriorDirection = Direction;
+		Direction = GetDirection();
+		//A directional key is being pressed
+		if(Direction != PriorDirection)
+		{
+			Debug.Log ("User moved robot in direction: " + Direction.ToString());
+			commandMgr.Move(selectionMgr.selectedUnits, Direction);			
+			if (Direction == 0)
+			{
+				Debug.Log ("Robot Stopped:" + Direction.ToString());
+				commandMgr.Stop (selectionMgr.selectedUnits);
+			}
+		}
+	}
+
+	public int GetDirection()
+	{
+		int direction = 0;
+		if(vert != 0)
+		{
+			if(vert>0)
+			{
+				direction = 2;
+				direction += (int)hori;
+			}
+			else
+			{
+				direction = 6;
+				direction -= (int)hori;
+			}
+		}
+		else if(hori != 0)
+		{
+			if(hori>0)
+				direction = 4;
+			else 
+				direction = 8;
+		}
+		return direction;
 	}
 }

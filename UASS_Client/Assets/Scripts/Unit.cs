@@ -17,8 +17,8 @@ public class Unit : MonoBehaviour{
 
 	public Vector3 Position;
 	public Vector3 Orientation;
-	public Vector3 OrientationOffset;
-	public Vector3 PositionOffset;
+	//public Vector3 OrientationOffset;
+	//public Vector3 PositionOffset;
 
 	public int UnitType;
 	public string Owner;
@@ -50,8 +50,6 @@ public class Unit : MonoBehaviour{
 		Orientation=U.Orientation;
 		IPAddress=U.IPAddress;
 		Port=U.Port;
-		PositionOffset = U.PositionOffeset;
-		OrientationOffset = U.OrientationOffset;
 	}
 
 	void Start()
