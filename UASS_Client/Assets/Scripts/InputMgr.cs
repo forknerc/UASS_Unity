@@ -46,10 +46,6 @@ public class InputMgr : MonoBehaviour {
 	void Start () {
 		selectionMgr = GetComponent<SelectionMgr>();
 		commandMgr = GetComponent<CommandMgr>();
-
-		LaunchShortcut = KeyCode.G;
-		LandShortcut = KeyCode.H;
-
 	}
 
 	void CheckMode()

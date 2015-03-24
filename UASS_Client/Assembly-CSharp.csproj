@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\UnitMgr.cs" />
      <Compile Include="Assets\Scripts\UpdatePositionScript.cs" />
      <Compile Include="Assets\Scripts\WayPointMotion.cs" />
+     <Compile Include="Assets\UpdatePosition.cs" />
      <Compile Include="Assets\oldAssets\NetworkTest2 Stuff\networkMgr_old.cs" />
      <Compile Include="Assets\oldAssets\NetworkTest2 Stuff\player.cs" />
      <Compile Include="Assets\oldAssets\unitScripts\PioneerCommand.cs" />
